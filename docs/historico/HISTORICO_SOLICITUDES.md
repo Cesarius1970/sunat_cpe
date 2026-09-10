@@ -82,5 +82,17 @@ Este documento mantiene un registro secuencial y numerado de todas las solicitud
 - **Respuesta**:
   > Se creó el manual técnico en `docs/MANUAL_TECNICO.md` detallando la arquitectura por capas, diagramas de flujo y de secuencia, y la especificación de los 5 algoritmos clave (generación UBL 2.0/2.1, firma digital XMLDSig con canonicalización C14N y RSA-SHA256, empaquetado ZIP, consumo de Web Services SOAP/REST y procesamiento de CDR). Se enriquecieron los comentarios de documentación en `src/lib.rs` enlazando al manual técnico y se validó la generación con `cargo doc`. Se ejecutó el commit correspondiente.
 
+---
+
+## Interacción #7
+- **Fecha / Hora**: `2026-09-10T09:01:06-05:00`
+- **Solicitud / Prompt**:
+  ```text
+  Pon como regla que debe usarse el idioma español y se debe usar el prefijo "CPE_" o "cpe_" según corresponda en la nomenclatura de objetos, siempre y cuando no colisione o altere la gestión con el API de SUNAT.
+  ```
+- **Respuesta**:
+  > Se agregó la sección 5 en `docs/REGLAS_PROYECTO.md` estableciendo la obligatoriedad del idioma español y del uso de los prefijos `CPE_` / `cpe_` (ej. `CpeFactura`, `cpe_generar_xml`, `CPE_CATALOGO_*`), salvaguardando expresamente la compatibilidad con los esquemas XSD de OASIS UBL y los contratos de servicios web SOAP/REST de SUNAT. Se sincronizó `docs/MANUAL_TECNICO.md` con los nombres de módulos correspondientes (`cpe_modelos`, `cpe_ubl`, `cpe_firma`, etc.) y se realizó el commit de la interacción.
+
+
 
 

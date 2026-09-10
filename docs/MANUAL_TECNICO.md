@@ -18,12 +18,13 @@ flowchart TD
 ```
 
 ### Capas Principales:
-1. **Modelos de Dominio (`models`)**: Representación tipada de Facturas, Boletas, Notas de Crédito, Notas de Débito, Guías de Remisión, etc., junto con sus catálogos tributarios SUNAT.
-2. **Generador UBL (`ubl`)**: Transformación de modelos fuertemente tipados a documentos XML compatibles con OASIS UBL 2.0 y 2.1.
-3. **Motor de Firma Digital (`signer`)**: Implementación del estándar XMLDSig (Enveloped Signature), canonicalización (C14N) y firmado con clave privada RSA (SHA-256 / SHA-1) usando certificados X.509 (`.pfx` / `.p12`).
-4. **Empaquetado y Compresión (`packaging`)**: Generación de archivos comprimidos en formato ZIP con la nomenclatura exigida por SUNAT (`{RUC}-{TIPO}-{SERIE}-{NUMERO}.zip`).
-5. **Cliente de Servicios Web (`ws`)**: Conexión segura TLS/HTTPS con los servicios SOAP / REST de SUNAT (OSE / Beta / Homologación / Producción).
-6. **Recepción y Validación de CDR (`cdr`)**: Descompresión y lectura del XML de Constancia de Recepción (CDR) devuelto por SUNAT para determinar el estado de aceptación o rechazo.
+1. **Modelos de Dominio (`cpe_modelos`)**: Representación tipada de Facturas, Boletas, Notas de Crédito, Notas de Débito, Guías de Remisión, etc. (`CpeFactura`, `CpeBoleta`, etc.), junto con sus catálogos tributarios SUNAT (`CPE_CATALOGO_*`).
+2. **Generador UBL (`cpe_ubl`)**: Transformación de modelos fuertemente tipados a documentos XML compatibles con OASIS UBL 2.0 y 2.1 (`cpe_generar_factura_xml`, etc.).
+3. **Motor de Firma Digital (`cpe_firma`)**: Implementación del estándar XMLDSig (Enveloped Signature), canonicalización (C14N) y firmado con clave privada RSA (SHA-256 / SHA-1) usando certificados X.509 (`.pfx` / `.p12`).
+4. **Empaquetado y Compresión (`cpe_empaquetado`)**: Generación de archivos comprimidos en formato ZIP con la nomenclatura exigida por SUNAT (`{RUC}-{TIPO}-{SERIE}-{NUMERO}.zip`).
+5. **Cliente de Servicios Web (`cpe_ws`)**: Conexión segura TLS/HTTPS con los servicios SOAP / REST de SUNAT (OSE / Beta / Homologación / Producción).
+6. **Recepción y Validación de CDR (`cpe_cdr`)**: Descompresión y lectura del XML de Constancia de Recepción (CDR) devuelto por SUNAT para determinar el estado de aceptación o rechazo.
+7. **Manejo de Errores (`cpe_error`)**: Errores fuertemente tipados con `CpeError`.
 
 ---
 
@@ -109,7 +110,7 @@ sequenceDiagram
 3. **Comentarios de Implementación (`//`)**:
    - Se reservan para explicar el *por qué* de decisiones de diseño, algoritmos matemáticos/criptográficos o particularidades de la normativa técnica SUNAT.
 4. **Manejo de Errores con Tipos Dedicados**:
-   - `SunatError`: Enum tipado con `thiserror` que desglosa errores de validación local, serialización XML, firma criptográfica, transporte de red y errores devueltos por SUNAT.
+   - `CpeError`: Enum tipado con `thiserror` que desglosa errores de validación local, serialización XML, firma criptográfica, empaquetado, transporte de red y respuestas devueltas por SUNAT.
 
 ---
 

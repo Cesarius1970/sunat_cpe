@@ -46,3 +46,16 @@ Este documento consolida las reglas, lineamientos y estándares acordados para e
 - **Manejo de Errores**: Uso estricto de `Result<T, E>` y `thiserror` (biblioteca) / `anyhow` (binarios/CLI). Prohibido `unwrap()` o `expect()` fuera de tests.
 - **Calidad y Linter**: Código limpio con `cargo clippy --all-targets --all-features --locked -- -D warnings`.
 - **Pruebas**: Nombres de tests descriptivos, pruebas unitarias e integración rigurosas.
+
+---
+
+## 5. Idioma y Nomenclatura de Objetos
+
+- **Idioma**: Debe usarse el idioma español de manera obligatoria en la documentación, comentarios, nombres de variables/estructuras/funciones y mensajes de error.
+- **Prefijo `CPE_` / `cpe_`**:
+  - En estructuras, traits o tipos: usar prefijo `Cpe` / `CPE_` según la convención de Rust (ejemplo: `CpeFactura`, `CpeBoleta`, `CpeResumenDiario`).
+  - En funciones, módulos o métodos: usar prefijo `cpe_` (ejemplo: `cpe_generar_xml`, `cpe_firmar_documento`).
+  - En constantes o estáticos: usar prefijo `CPE_` (ejemplo: `CPE_VERSION_UBL_2_1`, `CPE_CATALOGO_01_FACTURA`).
+- **Excepción de interoperabilidad con SUNAT / UBL**:
+  - Esta convención de prefijos e idioma no debe colisionar ni alterar la estructura exigida por los esquemas XSD de OASIS UBL ni los contratos de los servicios web (SOAP / REST) de SUNAT (ejemplos: nombres de elementos XML como `cac:PartyLegalEntity`, métodos SOAP como `sendBill` o `sendSummary`, nombres de tags y atributos de esquemas tributarios oficiales).
+
