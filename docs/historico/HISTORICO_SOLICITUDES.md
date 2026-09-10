@@ -149,6 +149,18 @@ Este documento mantiene un registro secuencial y numerado de todas las solicitud
 - **Respuesta**:
   > Se verificó la disponibilidad del nombre `sunat_cpe` en crates.io (confirmado disponible). Se completaron y optimizaron los metadatos obligatorios en `Cargo.toml` (`documentation`, `exclude`). Se validó la prueba en seco de publicación (`cargo publish --dry-run`) resultando en 0 errores y 0 advertencias. Se documentó la guía completa paso a paso en `docs/GUIA_PUBLICACION_CRATES_IO.md` incluyendo autenticación (`cargo login`), verificación de correo, requisitos de SemVer y reglas de inmutabilidad. Se realizó el commit de la interacción.
 
+---
+
+## Interacción #12
+- **Fecha / Hora**: `2026-09-10T16:12:48-05:00`
+- **Solicitud / Prompt**:
+  ```text
+  Modifica las categorias de Cargo.toml por "api-bindings", "asynchronus", "finance"
+  ```
+- **Respuesta**:
+  > Se actualizaron las categorías en `Cargo.toml` utilizando los slugs oficiales validados en crates.io: `["api-bindings", "asynchronous", "finance"]`. Se verificó mediante `cargo test` y `cargo publish --dry-run` asegurando empaquetado y compilación limpia con 0 advertencias y 0 errores. Se ejecutó el commit de la interacción.
+
+
 
 
 
