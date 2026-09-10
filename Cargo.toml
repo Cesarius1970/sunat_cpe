@@ -10,4 +10,38 @@ license = "MIT OR Apache-2.0"
 keywords = ["sunat", "cpe", "facturacion", "peru", "ubl"]
 categories = ["financial", "parser-implementations"]
 
+[features]
+default = ["async"]
+async = ["dep:reqwest", "dep:tokio", "reqwest/json"]
+blocking = ["dep:ureq"]
+
 [dependencies]
+# Aritmética decimal exacta (prohibición de punto flotante)
+rust_decimal = { version = "1.36", features = ["serde", "maths"] }
+rust_decimal_macros = "1.36"
+
+# Manejo de errores fuertemente tipados
+thiserror = "2.0"
+
+# Serialización y deserialización
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Manipulación de XML pura en Rust
+quick-xml = { version = "0.37", features = ["serialize"] }
+
+# Compresión y empaquetado ZIP
+zip = { version = "2.2", default-features = false, features = ["deflate"] }
+
+# Criptografía 100% Rust pura (sin dependencias C de OpenSSL)
+rsa = "0.9"
+sha2 = { version = "0.10", features = ["oid"] }
+sha1 = "0.10"
+base64 = "0.22"
+
+# Cliente I/O Asíncrono opcional
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"], optional = true }
+tokio = { version = "1.40", features = ["rt-multi-thread", "macros"], optional = true }
+
+# Cliente I/O Síncrono bloqueante opcional
+ureq = { version = "2.10", default-features = false, features = ["tls", "json"], optional = true }

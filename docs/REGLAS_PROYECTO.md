@@ -87,5 +87,18 @@ Este documento consolida las reglas, lineamientos y estándares acordados para e
   - Consultas de CDR y estado de comprobantes ante SUNAT.
 - **Exclusión Expresa**: Queda terminantemente excluido cualquier desarrollo, planificación o investigación relacionada con el **SIRE** (Sistema Integrado de Registros Electrónicos - RVIE/RCE) o sistemas contables accesorios que no pertenezcan al flujo de emisión y recepción de CPE.
 
+---
+
+## 8. Decisiones Arquitectónicas Acordadas (GRILL-ME)
+
+- **Modelo de I/O Dual con Sufijos Explícitos**:
+  - Soporte de comunicación dual mediante *feature flags* (`async` por defecto y `blocking`).
+  - Las funciones de red y Web Services deben incorporar obligatoriamente el sufijo `_sync` o `_async` en su identificador (ejemplo: `cpe_enviar_factura_async`, `cpe_enviar_factura_sync`, `cpe_consultar_cdr_async`, `cpe_consultar_cdr_sync`).
+- **Aritmética Decimal Exacta**:
+  - Adopción estandarizada del crate `rust_decimal` (precisión de 128 bits en base 10) para todo cálculo o almacenamiento monetario.
+- **Criptografía 100% Rust Nativo**:
+  - La firma digital XMLDSig y la lectura de certificados `.pfx` / `.p12` se implementa en Rust puro (sin depender de bibliotecas compartidas C como OpenSSL en el sistema operativo host), garantizando portabilidad absoluta y compilación cruzada sin fricciones.
+
+
 
 
