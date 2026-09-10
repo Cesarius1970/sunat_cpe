@@ -9,6 +9,8 @@ readme = "README.md"
 license = "MIT OR Apache-2.0"
 keywords = ["sunat", "cpe", "facturacion", "peru", "ubl"]
 categories = ["financial", "parser-implementations"]
+documentation = "https://docs.rs/sunat_cpe"
+exclude = ["docs/historico/*"]
 
 [features]
 default = ["async"]
