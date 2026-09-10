@@ -72,4 +72,20 @@ Este documento consolida las reglas, lineamientos y estándares acordados para e
   - Se debe utilizar aritmética decimal exacta en base 10 (por ejemplo mediante el crate `rust_decimal` o un tipo de dominio `CpeMontoDecimal` / enteros para precisión en escala).
   - Los totales finales deben redondearse a exactamente 2 decimales utilizando redondeo comercial estándar (Half Up), y los valores/precios unitarios deben permitir hasta 10 decimales según lo estipulado por SUNAT.
 
+---
+
+## 7. Alcance Exclusivo CPE (Exclusión Expresa de SIRE)
+
+- **Alcance Permitido**: La investigación, diseño e implementación se restringe exclusivamente al subsistema de **Comprobantes de Pago Electrónicos (CPE)** bajo normativa de SUNAT:
+  - Factura Electrónica (01)
+  - Boleta de Venta Electrónica (03)
+  - Nota de Crédito Electrónica (07)
+  - Nota de Débito Electrónica (08)
+  - Guía de Remisión Remitente y Transportista (09 y 31)
+  - Comprobante de Retención (20) y Percepción (40)
+  - Resumen Diario de Boletas (RC) y Comunicación de Baja (RA)
+  - Consultas de CDR y estado de comprobantes ante SUNAT.
+- **Exclusión Expresa**: Queda terminantemente excluido cualquier desarrollo, planificación o investigación relacionada con el **SIRE** (Sistema Integrado de Registros Electrónicos - RVIE/RCE) o sistemas contables accesorios que no pertenezcan al flujo de emisión y recepción de CPE.
+
+
 

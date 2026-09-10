@@ -18,13 +18,15 @@ flowchart TD
 ```
 
 ### Capas Principales:
-1. **Modelos de Dominio (`cpe_modelos`)**: Representación tipada de Facturas, Boletas, Notas de Crédito, Notas de Débito, Guías de Remisión, etc. (`CpeFactura`, `CpeBoleta`, etc.), junto con sus catálogos tributarios SUNAT (`CPE_CATALOGO_*`).
-2. **Generador UBL (`cpe_ubl`)**: Transformación de modelos fuertemente tipados a documentos XML compatibles con OASIS UBL 2.0 y 2.1 (`cpe_generar_factura_xml`, etc.).
-3. **Motor de Firma Digital (`cpe_firma`)**: Implementación del estándar XMLDSig (Enveloped Signature), canonicalización (C14N) y firmado con clave privada RSA (SHA-256 / SHA-1) usando certificados X.509 (`.pfx` / `.p12`).
-4. **Empaquetado y Compresión (`cpe_empaquetado`)**: Generación de archivos comprimidos en formato ZIP con la nomenclatura exigida por SUNAT (`{RUC}-{TIPO}-{SERIE}-{NUMERO}.zip`).
-5. **Cliente de Servicios Web (`cpe_ws`)**: Conexión segura TLS/HTTPS con los servicios SOAP / REST de SUNAT (OSE / Beta / Homologación / Producción).
-6. **Recepción y Validación de CDR (`cpe_cdr`)**: Descompresión y lectura del XML de Constancia de Recepción (CDR) devuelto por SUNAT para determinar el estado de aceptación o rechazo.
-7. **Manejo de Errores (`cpe_error`)**: Errores fuertemente tipados con `CpeError`.
+1. **Modelos de Dominio (`cpe_modelos`)**: Representación tipada de Facturas, Boletas, Notas de Crédito, Notas de Débito, Guías de Remisión, etc. (`CpeFactura`, `CpeBoleta`, `CpeNotaCredito`, `CpeGuiaRemision`, etc.).
+2. **Catálogos Oficiales SUNAT (`cpe_catalogos`)**: Implementación exhaustiva de los Catálogos SUNAT (No. 01 al 60: tipos de documento, monedas, afectación al IGV, unidades de medida, tipos de nota de crédito/débito, regímenes de retención/percepción, motivos de traslado, detracciones, etc.) con variantes `Desconocido(String)` para garantizar compatibilidad hacia adelante ante nuevas resoluciones.
+3. **Generador UBL (`cpe_ubl`)**: Transformación de modelos a XML OASIS UBL 2.0 y 2.1 mediante traits adaptadores (`CpeUblSerializador`) desacoplados de la versión del esquema.
+4. **Motor de Firma Digital (`cpe_firma`)**: Implementación de XMLDSig (Enveloped Signature), canonicalización C14N y firma RSA-SHA256 con certificados X.509 (`.pfx` / `.p12`).
+5. **Empaquetado y Compresión (`cpe_empaquetado`)**: Generación de archivos comprimidos ZIP (`{RUC}-{TIPO}-{SERIE}-{NUMERO}.zip`).
+6. **Cliente de Servicios Web (`cpe_ws`)**: Gestión de conexiones SOAP (BillService) y REST (API Guías de Remisión) con soporte para entornos de **Pruebas (Beta)** y **Producción**.
+7. **Recepción y Validación de CDR (`cpe_cdr`)**: Descompresión y lectura del XML de Constancia de Recepción (CDR) para determinar aceptación, observaciones o rechazo.
+8. **Manejo de Errores (`cpe_error`)**: Enum tipado `CpeError` para modelar fallos de validación de negocio, criptográficos, de red y códigos de error SUNAT.
+
 
 ---
 
@@ -81,15 +83,24 @@ sequenceDiagram
   - Ejemplo: `20123456789-01-F001-00000001.xml`
 - **Compresión**: Formato ZIP estándar conteniendo únicamente el archivo XML firmado, nombrado idénticamente con extensión `.zip`.
 
-### 3.4 Algoritmo de Comunicación Web Service (SOAP)
-- **Métodos SUNAT**:
+### 3.4 Algoritmo de Comunicación Web Service (SOAP y REST)
+- **Métodos SUNAT SOAP (`billService`)**:
   - `sendBill`: Envío sincrónico de Facturas, Boletas y Notas asociadas. Devuelve el CDR de inmediato en la respuesta.
   - `sendSummary`: Envío asincrónico de Resúmenes Diarios de Boletas y Comunicaciones de Baja. Devuelve un número de ticket.
   - `getStatus`: Consulta del estado del ticket generado por `sendSummary`.
-  - `sendPack`: Envío de Guías de Remisión Electrónica.
-- **Autenticación**: Cabeceras `wsse:Security` con `UsernameToken`:
+  - `sendPack`: Envío de Guías de Remisión Electrónica / Lotes.
+- **Autenticación SOAP**: Cabeceras `wsse:Security` con `UsernameToken`:
   - `Username`: `[RUC][USUARIO_SOL]` (ej. `20123456789MODDATOS`)
   - `Password`: `[CLAVE_SOL]` (ej. `moddatos`)
+- **Matriz Oficial de Endpoints**:
+  | Servicio / Comprobante | Entorno Beta (Pruebas) | Entorno Producción |
+  | :--- | :--- | :--- |
+  | **Facturas, Boletas, NC, ND** | `https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService` | `https://e-factura.sunat.gob.pe/ol-ti-itcpfegem/billService` |
+  | **Retenciones y Percepciones** | `https://e-beta.sunat.gob.pe/ol-ti-itemision-otroscpe-gem-beta/billService` | `https://e-factura.sunat.gob.pe/ol-ti-itemision-otroscpe-gem/billService` |
+  | **Consulta de Validez / CDR** | `https://e-beta.sunat.gob.pe/ol-ti-itwsconsvalidcpe-beta/billConsultService` | `https://e-factura.sunat.gob.pe/ol-it-wsconsvalidcpe/billConsultService` |
+  | **Guías de Remisión (REST Token)** | `https://api-seguridad.sunat.gob.pe/v1/clientessol/{id}/oauth2/token` | `https://api-seguridad.sunat.gob.pe/v1/clientessol/{id}/oauth2/token` |
+  | **Guías de Remisión (REST Envío)** | `https://api-cpe.sunat.gob.pe/v1/contribuyente/gem/comprobantes` | `https://api.sunat.gob.pe/v1/contribuyente/gem/comprobantes` |
+
 
 ### 3.5 Algoritmo de Procesamiento de CDR (Constancia de Recepción)
 - **Estructura del CDR**: Archivo `R-[RUC]-[TIPO]-[SERIE]-[NUMERO].zip` retornado en Base64 dentro del elemento `applicationResponse`.
