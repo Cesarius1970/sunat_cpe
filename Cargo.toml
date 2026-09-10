@@ -2,5 +2,12 @@
 name = "sunat_cpe"
 version = "0.1.0"
 edition = "2024"
+rust-version = "1.85.0"
+authors = ["César A Vergara Buenaventura <cesarvergarab@gmail.com>"]
+description = "Librería en Rust para la generación, firma digital, validación y envío de Comprobantes de Pago Electrónicos (CPE) bajo los estándares de SUNAT (Perú)."
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+keywords = ["sunat", "cpe", "facturacion", "peru", "ubl"]
+categories = ["financial", "parser-implementations"]
 
 [dependencies]
