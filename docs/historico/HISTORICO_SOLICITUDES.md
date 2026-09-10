@@ -93,6 +93,18 @@ Este documento mantiene un registro secuencial y numerado de todas las solicitud
 - **Respuesta**:
   > Se agregó la sección 5 en `docs/REGLAS_PROYECTO.md` estableciendo la obligatoriedad del idioma español y del uso de los prefijos `CPE_` / `cpe_` (ej. `CpeFactura`, `cpe_generar_xml`, `CPE_CATALOGO_*`), salvaguardando expresamente la compatibilidad con los esquemas XSD de OASIS UBL y los contratos de servicios web SOAP/REST de SUNAT. Se sincronizó `docs/MANUAL_TECNICO.md` con los nombres de módulos correspondientes (`cpe_modelos`, `cpe_ubl`, `cpe_firma`, etc.) y se realizó el commit de la interacción.
 
+---
+
+## Interacción #8
+- **Fecha / Hora**: `2026-09-10T09:02:28-05:00`
+- **Solicitud / Prompt**:
+  ```text
+  Pon como regla que no se puede usar decimales de punto flotante para calcular o almacenar valores de moneda. Analizar la declaración de la API SUNAT para respaldar o ignorar esta regla.
+  ```
+- **Respuesta**:
+  > Se analizó la normativa técnica y el catálogo de validaciones de SUNAT (UBL 2.1), concluyendo que respalda plenamente la regla de prohibir el punto flotante (`f32`, `f64`) debido a que la representación binaria IEEE 754 genera discrepancias de centavos (`0.01`) al calcular sumatorias de líneas, bases imponibles e impuestos, activando errores de rechazo de SUNAT (ej. 2014, 2015, 2017). Se incorporó la Sección 6 en `docs/REGLAS_PROYECTO.md` y la subsección 3.6 en `docs/MANUAL_TECNICO.md` exigiendo aritmética decimal exacta en base 10 (ej. `rust_decimal`) con redondeo Half Up a 2 decimales para totales y hasta 10 decimales en precios/cantidades unitarias. Se ejecutó el commit de la interacción.
+
+
 
 
 

@@ -98,7 +98,21 @@ sequenceDiagram
   - `0100` a `1999`: **Aceptado con observaciones** (Válido tributariamente, pero requiere subsanar advertencias).
   - `>= 2000`: **Rechazado** (Comprobante inválido, no tiene validez tributaria).
 
+### 3.6 Algoritmo de Precisión Numérica y Aritmética Decimal (Antifloating-Point)
+- **Motivación y Normativa SUNAT**:
+  - Las Guías de Validación de SUNAT exigen consistencia estricta en las sumatorias:
+    $$\text{PayableAmount} = \sum \text{LineExtensionAmount} + \sum \text{Tributos} - \sum \text{DescuentosGlobales} + \sum \text{CargosGlobales}$$
+  - El uso de punto flotante binario IEEE 754 (`f32`, `f64`) genera pérdida de precisión acumulativa (errores de centavos `0.01`), provocando el rechazo con códigos de error SUNAT (ej. Error 2014: *El valor del IGV no coincide*, Error 2015: *El total del documento no coincide con la sumatoria de ítems*).
+- **Especificaciones del Algoritmo**:
+  1. **Aritmética Decimal en Base 10**: Todo cálculo y almacenamiento de importes se realiza exclusivamente con representación decimal exacta (ej. `rust_decimal` de 128 bits o enteros escalados).
+  2. **Valores Unitarios**: Admite hasta 10 decimales en `cbc:PriceAmount` y `cbc:AlternativeConditionPrice`.
+  3. **Cantidades**: Hasta 10 decimales en `cbc:InvoicedQuantity`.
+  4. **Importes Totales e Impuestos**: Redondeo comercial estricto a **2 decimales** utilizando la estrategia *Half Up* (mitad hacia arriba):
+     $$\text{ImporteRedondeado} = \text{round\_half\_up}(x, 2)$$
+  5. **Cálculo de IGV por Línea vs Global**: Garantizar que la sumatoria de bases imponibles y el impuesto liquidado cumplan con las tolerancias y reglas de redondeo de la matriz de validaciones de SUNAT.
+
 ---
+
 
 ## 4. Convenciones de Código y Documentación en Rust
 

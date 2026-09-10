@@ -59,3 +59,17 @@ Este documento consolida las reglas, lineamientos y estándares acordados para e
 - **Excepción de interoperabilidad con SUNAT / UBL**:
   - Esta convención de prefijos e idioma no debe colisionar ni alterar la estructura exigida por los esquemas XSD de OASIS UBL ni los contratos de los servicios web (SOAP / REST) de SUNAT (ejemplos: nombres de elementos XML como `cac:PartyLegalEntity`, métodos SOAP como `sendBill` o `sendSummary`, nombres de tags y atributos de esquemas tributarios oficiales).
 
+---
+
+## 6. Prohibición de Punto Flotante para Valores Monetarios
+
+- **Regla Estricta**: Queda terminantemente **prohibido el uso de tipos de punto flotante binario (`f32`, `f64`)** para representar, calcular o almacenar valores monetarios, tasas tributarias, cantidades o importes en la librería.
+- **Respaldo Técnico según la Normativa y API de SUNAT**:
+  - **Análisis de Validación SUNAT**: El motor de validación de SUNAT (UBL 2.1) aplica reglas aritméticas estrictas (códigos de error 2014, 2015, 2017, 2020, 2021, 2022, entre otros) que exigen coherencia matemática exacta entre la sumatoria de las líneas (`LineExtensionAmount`), impuestos calculados (IGV 18%, ISC, ICBPER) y el importe total a pagar (`PayableAmount`).
+  - **Problema de IEEE 754**: Los tipos `f32` y `f64` almacenan números en base 2, lo que genera inexactitudes inherentes en fracciones decimales comunes (ej. `0.1 + 0.2 != 0.3`). Al multiplicar bases imponibles por alícuotas o acumular líneas, los errores de redondeo binario producen diferencias de centavos (`0.01`), provocando el rechazo inmediato del comprobante por SUNAT.
+  - **Conclusión**: La declaración técnica y matriz de validaciones de SUNAT **respalda plenamente esta regla**.
+- **Solución Técnica Obligatoria en Rust**:
+  - Se debe utilizar aritmética decimal exacta en base 10 (por ejemplo mediante el crate `rust_decimal` o un tipo de dominio `CpeMontoDecimal` / enteros para precisión en escala).
+  - Los totales finales deben redondearse a exactamente 2 decimales utilizando redondeo comercial estándar (Half Up), y los valores/precios unitarios deben permitir hasta 10 decimales según lo estipulado por SUNAT.
+
+
