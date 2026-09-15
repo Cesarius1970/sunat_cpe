@@ -181,3 +181,15 @@ Este documento mantiene un registro secuencial y numerado de todas las solicitud
   ```
 - **Respuesta**:
   > Se generó el diagrama interactivo de arquitectura técnica de la librería `sunat_cpe` bajo perfil showcase (`docs/diagrama_arquitectura.json` y `docs/arquitectura_sunat_cpe.html`) utilizando la herramienta Archify CLI. El diagrama modela la interacción entre los 9 componentes principales del sistema (`app`, `cpe_modelos`, `cpe_catalogos`, `cpe_ubl`, `cpe_firma`, `cpe_empaquetado`, `cpe_ws`, `sunat`, `cpe_cdr`), sus límites de confianza (`region` y `security-group`), 3 vistas interactivas guiadas y tarjetas explicativas de dominio, serialización y conectividad. Se superó la validación estricta showcase con 9/9 comprobaciones aprobadas, 0 errores y 0 advertencias, procediendo con la entrega determinista del artefacto HTML standalone.
+
+---
+
+## Interacción #15
+- **Fecha / Hora**: `2026-09-15T13:55:00-05:00`
+- **Solicitud / Prompt**:
+  ```text
+  /graphify
+  ```
+- **Respuesta**:
+  > Se ejecutó la herramienta de extracción de grafo de conocimiento `graphify` sobre todo el proyecto `sunat_cpe` (33 archivos, ~72,951 palabras). Se combinó extracción estructural AST (código Rust) y extracción semántica (documentación técnica y arquitectura). Se construyó el grafo de conocimiento compuesto por 286 nodos, 450 aristas y 19 comunidades temáticas etiquetadas en lenguaje claro. Se generaron los artefactos `graphify-out/graph.html` (visualizador interactivo), `graphify-out/GRAPH_REPORT.md` (informe de auditoría, nodos centrales y conexiones no evidentes) y `graphify-out/graph.json` (datos estructurados GraphRAG).
+

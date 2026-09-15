@@ -1,0 +1,200 @@
+{
+  "Cargo.toml": {
+    "mtime": 1789399990.7773988,
+    "seen": 1789498402.436498,
+    "ast_hash": "5e228824a63d28546065212ea5f69997",
+    "semantic_hash": "5e228824a63d28546065212ea5f69997"
+  },
+  "docs/diagrama_arquitectura.json": {
+    "mtime": 1789485884.9166687,
+    "seen": 1789498402.436504,
+    "ast_hash": "fe86f13fdde34f928c46add8a46cf2cf",
+    "semantic_hash": "fe86f13fdde34f928c46add8a46cf2cf"
+  },
+  "src/cpe_catalogos/catalogo_01.rs": {
+    "mtime": 1789049300.2425032,
+    "seen": 1789498402.4365065,
+    "ast_hash": "2f0e89ec74a527b338463ba47c351cdc",
+    "semantic_hash": "2f0e89ec74a527b338463ba47c351cdc"
+  },
+  "src/cpe_catalogos/catalogo_02.rs": {
+    "mtime": 1789049306.1654456,
+    "seen": 1789498402.4365084,
+    "ast_hash": "f016dbca316ef2e2efc3764671d13649",
+    "semantic_hash": "f016dbca316ef2e2efc3764671d13649"
+  },
+  "src/cpe_catalogos/catalogo_06.rs": {
+    "mtime": 1789049315.393356,
+    "seen": 1789498402.4365096,
+    "ast_hash": "deece853f1dc40c219c4ede02a4414d1",
+    "semantic_hash": "deece853f1dc40c219c4ede02a4414d1"
+  },
+  "src/cpe_catalogos/catalogo_07.rs": {
+    "mtime": 1789049323.2972798,
+    "seen": 1789498402.436511,
+    "ast_hash": "55bc8f08755aa25a3d733673edb47884",
+    "semantic_hash": "55bc8f08755aa25a3d733673edb47884"
+  },
+  "src/cpe_catalogos/catalogo_08.rs": {
+    "mtime": 1789049330.135214,
+    "seen": 1789498402.4365122,
+    "ast_hash": "bbb93864e8a636688ded6350a3f88d64",
+    "semantic_hash": "bbb93864e8a636688ded6350a3f88d64"
+  },
+  "src/cpe_catalogos/catalogo_09.rs": {
+    "mtime": 1789049336.593152,
+    "seen": 1789498402.4365132,
+    "ast_hash": "cdb9408d21f3efd02f74037da473afcd",
+    "semantic_hash": "cdb9408d21f3efd02f74037da473afcd"
+  },
+  "src/cpe_catalogos/catalogo_10.rs": {
+    "mtime": 1789049341.5261047,
+    "seen": 1789498402.4365146,
+    "ast_hash": "e1a99979688190b0de966c75add50e18",
+    "semantic_hash": "e1a99979688190b0de966c75add50e18"
+  },
+  "src/cpe_catalogos/catalogo_17.rs": {
+    "mtime": 1789049348.8450346,
+    "seen": 1789498402.4365156,
+    "ast_hash": "29c912614393d53ffad21da905d8d560",
+    "semantic_hash": "29c912614393d53ffad21da905d8d560"
+  },
+  "src/cpe_catalogos/catalogo_52.rs": {
+    "mtime": 1789049355.840968,
+    "seen": 1789498402.4365165,
+    "ast_hash": "15240ea58a38b03d4c2ba2be2fb0f4fd",
+    "semantic_hash": "15240ea58a38b03d4c2ba2be2fb0f4fd"
+  },
+  "src/cpe_catalogos/catalogo_59.rs": {
+    "mtime": 1789049363.3218968,
+    "seen": 1789498402.4365177,
+    "ast_hash": "97f3947849bd76969e3c2275ae37d189",
+    "semantic_hash": "97f3947849bd76969e3c2275ae37d189"
+  },
+  "src/cpe_catalogos/mod.rs": {
+    "mtime": 1789049368.7918448,
+    "seen": 1789498402.4365187,
+    "ast_hash": "c9fb00b50c172e63a5b5fa6c5e18295b",
+    "semantic_hash": "c9fb00b50c172e63a5b5fa6c5e18295b"
+  },
+  "src/cpe_cdr/mod.rs": {
+    "mtime": 1789049564.5900433,
+    "seen": 1789498402.4365196,
+    "ast_hash": "07105d054bcbbadbb9cdfc94df5593e1",
+    "semantic_hash": "07105d054bcbbadbb9cdfc94df5593e1"
+  },
+  "src/cpe_empaquetado/mod.rs": {
+    "mtime": 1789049461.147982,
+    "seen": 1789498402.4365208,
+    "ast_hash": "793bf86004ce0b0a1300e177cbff985b",
+    "semantic_hash": "793bf86004ce0b0a1300e177cbff985b"
+  },
+  "src/cpe_error.rs": {
+    "mtime": 1789049292.33958,
+    "seen": 1789498402.4365215,
+    "ast_hash": "3cc9be9717d58903a1d2a83b7d2d9e93",
+    "semantic_hash": "3cc9be9717d58903a1d2a83b7d2d9e93"
+  },
+  "src/cpe_firma/mod.rs": {
+    "mtime": 1789049559.0100935,
+    "seen": 1789498402.4365225,
+    "ast_hash": "2b15a23294f4833a567293eee6f9aeb4",
+    "semantic_hash": "2b15a23294f4833a567293eee6f9aeb4"
+  },
+  "src/cpe_modelos/cpe_boleta.rs": {
+    "mtime": 1789049402.493527,
+    "seen": 1789498402.4365234,
+    "ast_hash": "f842a2b6899ca22908904148a26a2b01",
+    "semantic_hash": "f842a2b6899ca22908904148a26a2b01"
+  },
+  "src/cpe_modelos/cpe_comun.rs": {
+    "mtime": 1789049384.8156931,
+    "seen": 1789498402.4365244,
+    "ast_hash": "df896aac69f9f396370fce8d4f8ab215",
+    "semantic_hash": "df896aac69f9f396370fce8d4f8ab215"
+  },
+  "src/cpe_modelos/cpe_factura.rs": {
+    "mtime": 1789049391.5776296,
+    "seen": 1789498402.4365253,
+    "ast_hash": "1197a2927860dd7783de80e21b3241c9",
+    "semantic_hash": "1197a2927860dd7783de80e21b3241c9"
+  },
+  "src/cpe_modelos/cpe_nota_credito.rs": {
+    "mtime": 1789049409.3934624,
+    "seen": 1789498402.436526,
+    "ast_hash": "974bfb810d2dcfd2d014fe85afef7bb3",
+    "semantic_hash": "974bfb810d2dcfd2d014fe85afef7bb3"
+  },
+  "src/cpe_modelos/cpe_nota_debito.rs": {
+    "mtime": 1789049419.2243705,
+    "seen": 1789498402.436527,
+    "ast_hash": "0d65588845716b72d8dd3af402c85273",
+    "semantic_hash": "0d65588845716b72d8dd3af402c85273"
+  },
+  "src/cpe_modelos/cpe_resumen_diario.rs": {
+    "mtime": 1789049429.4482753,
+    "seen": 1789498402.4365284,
+    "ast_hash": "4f83cd864d8ce341ee29c8b541bfd2b5",
+    "semantic_hash": "4f83cd864d8ce341ee29c8b541bfd2b5"
+  },
+  "src/cpe_modelos/mod.rs": {
+    "mtime": 1789049436.7372077,
+    "seen": 1789498402.4365292,
+    "ast_hash": "cde49a88b9c2b32d0c9aacb8e82b9331",
+    "semantic_hash": "cde49a88b9c2b32d0c9aacb8e82b9331"
+  },
+  "src/cpe_ubl/mod.rs": {
+    "mtime": 1789049541.1942534,
+    "seen": 1789498402.4365299,
+    "ast_hash": "6c168ecf3e38039badd335441531967c",
+    "semantic_hash": "6c168ecf3e38039badd335441531967c"
+  },
+  "src/cpe_ws/mod.rs": {
+    "mtime": 1789049498.0066445,
+    "seen": 1789498402.4365308,
+    "ast_hash": "29328c0023cd3b770fd6729738d428a4",
+    "semantic_hash": "29328c0023cd3b770fd6729738d428a4"
+  },
+  "src/lib.rs": {
+    "mtime": 1789049513.236506,
+    "seen": 1789498402.4365318,
+    "ast_hash": "d499966ad03fda70817eb68d46dcea25",
+    "semantic_hash": "d499966ad03fda70817eb68d46dcea25"
+  },
+  "README.md": {
+    "mtime": 1789048711.6992245,
+    "seen": 1789498402.4365327,
+    "ast_hash": "27ad14fdcbbc5058278f986af7c7b4e2",
+    "semantic_hash": "27ad14fdcbbc5058278f986af7c7b4e2"
+  },
+  "docs/GUIA_PUBLICACION_CRATES_IO.md": {
+    "mtime": 1789074335.6642995,
+    "seen": 1789498402.4365335,
+    "ast_hash": "60fca764d48ddaf4b52153d720b2e1b9",
+    "semantic_hash": "60fca764d48ddaf4b52153d720b2e1b9"
+  },
+  "docs/MANUAL_TECNICO.md": {
+    "mtime": 1789049067.0718913,
+    "seen": 1789498402.4365342,
+    "ast_hash": "911543979047bb9e0702d73b8a83260f",
+    "semantic_hash": "911543979047bb9e0702d73b8a83260f"
+  },
+  "docs/REGLAS_PROYECTO.md": {
+    "mtime": 1789049229.9821963,
+    "seen": 1789498402.4365354,
+    "ast_hash": "6d56ac4baa9505d8d68c585bf2f765fe",
+    "semantic_hash": "6d56ac4baa9505d8d68c585bf2f765fe"
+  },
+  "docs/arquitectura_sunat_cpe.html": {
+    "mtime": 1789487494.900209,
+    "seen": 1789498402.436536,
+    "ast_hash": "0876149ff189a23c8501fe3b1519a37e",
+    "semantic_hash": "0876149ff189a23c8501fe3b1519a37e"
+  },
+  "docs/historico/HISTORICO_SOLICITUDES.md": {
+    "mtime": 1789487774.2608871,
+    "seen": 1789498402.436537,
+    "ast_hash": "150c15c2200d77c2669ee60f00f8f913",
+    "semantic_hash": "150c15c2200d77c2669ee60f00f8f913"
+  }
+}
