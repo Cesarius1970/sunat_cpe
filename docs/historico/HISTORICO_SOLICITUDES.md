@@ -171,12 +171,13 @@ Este documento mantiene un registro secuencial y numerado de todas las solicitud
 - **Respuesta**:
   > Se comprobó la autenticación SSH con GitHub (usuario `Cesarius1970`) y la existencia del repositorio remoto `git@github.com:Cesarius1970/sunat_cpe.git`. Se añadió la URL del repositorio a `Cargo.toml`, se configuró el control remoto `origin` y se publicó la rama principal mediante `git push -u origin main`. Se realizó el commit de la interacción.
 
+---
 
-
-
-
-
-
-
-
-
+## Interacción #14
+- **Fecha / Hora**: `2026-09-15T10:55:00-05:00`
+- **Solicitud / Prompt**:
+  ```text
+  /archify
+  ```
+- **Respuesta**:
+  > Se generó el diagrama interactivo de arquitectura técnica de la librería `sunat_cpe` bajo perfil showcase (`docs/diagrama_arquitectura.json` y `docs/arquitectura_sunat_cpe.html`) utilizando la herramienta Archify CLI. El diagrama modela la interacción entre los 9 componentes principales del sistema (`app`, `cpe_modelos`, `cpe_catalogos`, `cpe_ubl`, `cpe_firma`, `cpe_empaquetado`, `cpe_ws`, `sunat`, `cpe_cdr`), sus límites de confianza (`region` y `security-group`), 3 vistas interactivas guiadas y tarjetas explicativas de dominio, serialización y conectividad. Se superó la validación estricta showcase con 9/9 comprobaciones aprobadas, 0 errores y 0 advertencias, procediendo con la entrega determinista del artefacto HTML standalone.

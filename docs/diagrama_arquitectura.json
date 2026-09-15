@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Arquitectura de la Librería sunat_cpe",
+    "output": "docs/arquitectura_sunat_cpe.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "emision-completa",
+        "label": "Flujo de Emisión y Envío",
+        "focus": ["app", "modelos", "ubl", "firma", "empaquetado", "ws", "sunat", "cdr"],
+        "note": "Ruta principal desde la construcción del CPE hasta la validación del CDR."
+      },
+      {
+        "id": "seguridad-firma",
+        "label": "Criptografía y Serialización",
+        "focus": ["modelos", "catalogos", "ubl", "firma"],
+        "note": "Capa de dominio, catálogos normativos y firma digital XMLDSig pura."
+      },
+      {
+        "id": "red-transporte",
+        "label": "Transporte y Web Service",
+        "focus": ["empaquetado", "ws", "sunat", "cdr"],
+        "note": "Empaquetado ZIP en memoria y conexión SOAP con ambientes de SUNAT."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "app",
+      "type": "external",
+      "label": "Aplicación Cliente",
+      "sublabel": "ERP / POS / Facturación",
+      "pos": [30, 210],
+      "size": [130, 60]
+    },
+    {
+      "id": "catalogos",
+      "type": "backend",
+      "label": "cpe_catalogos",
+      "sublabel": "Tablas SUNAT 01-59",
+      "pos": [240, 70],
+      "size": [130, 60],
+      "tag": "Extensible"
+    },
+    {
+      "id": "modelos",
+      "type": "backend",
+      "label": "cpe_modelos",
+      "sublabel": "Dominio CPE",
+      "pos": [240, 210],
+      "size": [130, 60],
+      "tag": "rust_decimal"
+    },
+    {
+      "id": "ubl",
+      "type": "backend",
+      "label": "cpe_ubl",
+      "sublabel": "Serializador UBL 2.1",
+      "pos": [450, 210],
+      "size": [130, 60]
+    },
+    {
+      "id": "firma",
+      "type": "security",
+      "label": "cpe_firma",
+      "sublabel": "XMLDSig RSA-SHA256",
+      "pos": [660, 210],
+      "size": [130, 60],
+      "tag": "Rust Nativo"
+    },
+    {
+      "id": "empaquetado",
+      "type": "backend",
+      "label": "cpe_empaquetado",
+      "sublabel": "ZIP & Base64 RAM",
+      "pos": [870, 210],
+      "size": [130, 60]
+    },
+    {
+      "id": "ws",
+      "type": "backend",
+      "label": "cpe_ws",
+      "sublabel": "Cliente SOAP / REST",
+      "pos": [870, 350],
+      "size": [130, 60],
+      "tag": "async / sync"
+    },
+    {
+      "id": "sunat",
+      "type": "cloud",
+      "label": "SUNAT / OSE",
+      "sublabel": "Beta / Producción",
+      "pos": [1080, 350],
+      "size": [120, 60]
+    },
+    {
+      "id": "cdr",
+      "type": "backend",
+      "label": "cpe_cdr",
+      "sublabel": "Parser Constancia CDR",
+      "pos": [550, 350],
+      "size": [130, 60]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Crate sunat_cpe (Librería en Rust)",
+      "wraps": ["catalogos", "modelos", "ubl", "firma", "empaquetado", "ws", "cdr"]
+    },
+    {
+      "kind": "security-group",
+      "label": "Servidores Fiscales",
+      "wraps": ["sunat"]
+    }
+  ],
+  "connections": [
+    {
+      "id": "app-modelos",
+      "from": "app",
+      "to": "modelos",
+      "label": "Construir CPE",
+      "variant": "emphasis"
+    },
+    {
+      "id": "modelos-catalogos",
+      "from": "modelos",
+      "to": "catalogos",
+      "label": "Validar códigos",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "modelos-ubl",
+      "from": "modelos",
+      "to": "ubl",
+      "label": "a_xml_ubl()"
+    },
+    {
+      "id": "ubl-firma",
+      "from": "ubl",
+      "to": "firma",
+      "label": "XML UBL"
+    },
+    {
+      "id": "firma-empaquetado",
+      "from": "firma",
+      "to": "empaquetado",
+      "label": "XML firmado"
+    },
+    {
+      "id": "empaquetado-ws",
+      "from": "empaquetado",
+      "to": "ws",
+      "label": "ZIP memoria",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 20
+    },
+    {
+      "id": "ws-sunat",
+      "from": "ws",
+      "to": "sunat",
+      "label": "SOAP sendBill",
+      "variant": "emphasis"
+    },
+    {
+      "id": "ws-cdr",
+      "from": "ws",
+      "to": "cdr",
+      "label": "Extraer CDR",
+      "fromSide": "left",
+      "toSide": "right"
+    },
+    {
+      "id": "cdr-app",
+      "from": "cdr",
+      "to": "app",
+      "label": "Estado CPE",
+      "fromSide": "left",
+      "toSide": "bottom",
+      "via": [[95, 380]]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Dominio y Precisión Financiera",
+      "items": [
+        "Aritmética decimal exacta mediante rust_decimal (sin punto flotante)",
+        "Catálogos normativos completos 01 a 59 con variantes abiertas para resoluciones futuras"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Serialización y Firma Pura",
+      "items": [
+        "Generador XML UBL 2.1 desacoplado mediante el trait CpeUblSerializador",
+        "Motor de firma digital XMLDSig RSA-SHA256 100% nativo sin dependencias C de OpenSSL"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Conectividad y Validación",
+      "items": [
+        "Empaquetado ZIP y Base64 en memoria según nomenclatura oficial RUC-Tipo-Serie-Correlativo",
+        "Clientes I/O duales: asíncrono (_async con reqwest) y síncrono (_sync con ureq)",
+        "Parser semántico del CDR de SUNAT (Aceptado, Observado, Rechazado)"
+      ]
+    }
+  ]
+}
