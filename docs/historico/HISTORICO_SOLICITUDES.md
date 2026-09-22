@@ -193,3 +193,13 @@ Este documento mantiene un registro secuencial y numerado de todas las solicitud
 - **Respuesta**:
   > Se ejecutó la herramienta de extracción de grafo de conocimiento `graphify` sobre todo el proyecto `sunat_cpe` (33 archivos, ~72,951 palabras). Se combinó extracción estructural AST (código Rust) y extracción semántica (documentación técnica y arquitectura). Se construyó el grafo de conocimiento compuesto por 286 nodos, 450 aristas y 19 comunidades temáticas etiquetadas en lenguaje claro. Se generaron los artefactos `graphify-out/graph.html` (visualizador interactivo), `graphify-out/GRAPH_REPORT.md` (informe de auditoría, nodos centrales y conexiones no evidentes) y `graphify-out/graph.json` (datos estructurados GraphRAG).
 
+---
+
+## Interacción #16
+- **Fecha / Hora**: `2026-09-22T15:06:00-05:00`
+- **Solicitud / Prompt**:
+  ```text
+  Documenta profundamente la implementacion de los 3 pasos recomendadas. No implementes nada hasta recibir la aprobacion del plan. Guarda el documento planeado en @docs/
+  ```
+- **Respuesta**:
+  > Se elaboró y guardó el documento técnico exhaustivo `docs/PLAN_IMPLEMENTACION_REFACTORIZACIONES_Y_MEJORAS.md`. En él se especifican en detalle: (1) La refactorización del motor UBL para Boletas y Facturas sin reemplazo de texto, escapado seguro de entidades XML y parser semántico de CDR con `quick-xml`; (2) La implementación de `CpeUblSerializador` para Notas de Crédito (UBL `CreditNote-2`) y Notas de Débito (UBL `DebitNote-2`); (3) Las utilidades de generación de Cadena QR (R.S. 097-2012/SUNAT), extracción de hash de resumen digital, validador pre-vuelo (`cpe_validador`) con algoritmo de RUC (Módulo 11) y cuadre de totales, y constructor de certificados desde archivos PKCS#12/PFX. Se mantuvo intacto el código fuente de la librería a la espera de la aprobación del usuario.
