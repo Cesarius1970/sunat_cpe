@@ -1,200 +1,254 @@
 {
   "Cargo.toml": {
-    "mtime": 1789399990.7773988,
-    "seen": 1789498402.436498,
-    "ast_hash": "5e228824a63d28546065212ea5f69997",
-    "semantic_hash": "5e228824a63d28546065212ea5f69997"
+    "mtime": 1790109174.6093786,
+    "seen": 1790110401.1074684,
+    "ast_hash": "a83964f7206a510129e458dfb4a06acb",
+    "semantic_hash": "a83964f7206a510129e458dfb4a06acb"
   },
   "docs/diagrama_arquitectura.json": {
-    "mtime": 1789485884.9166687,
-    "seen": 1789498402.436504,
-    "ast_hash": "fe86f13fdde34f928c46add8a46cf2cf",
-    "semantic_hash": "fe86f13fdde34f928c46add8a46cf2cf"
+    "mtime": 1790109694.0503385,
+    "seen": 1790110401.1074796,
+    "ast_hash": "aec171818497f6553e84cdac3dfcbec4",
+    "semantic_hash": "aec171818497f6553e84cdac3dfcbec4"
   },
   "src/cpe_catalogos/catalogo_01.rs": {
-    "mtime": 1789049300.2425032,
-    "seen": 1789498402.4365065,
+    "mtime": 1789049300.24,
+    "seen": 1790110401.1074817,
     "ast_hash": "2f0e89ec74a527b338463ba47c351cdc",
     "semantic_hash": "2f0e89ec74a527b338463ba47c351cdc"
   },
   "src/cpe_catalogos/catalogo_02.rs": {
-    "mtime": 1789049306.1654456,
-    "seen": 1789498402.4365084,
+    "mtime": 1789049306.16,
+    "seen": 1790110401.1074831,
     "ast_hash": "f016dbca316ef2e2efc3764671d13649",
     "semantic_hash": "f016dbca316ef2e2efc3764671d13649"
   },
   "src/cpe_catalogos/catalogo_06.rs": {
-    "mtime": 1789049315.393356,
-    "seen": 1789498402.4365096,
+    "mtime": 1789049315.39,
+    "seen": 1790110401.1074846,
     "ast_hash": "deece853f1dc40c219c4ede02a4414d1",
     "semantic_hash": "deece853f1dc40c219c4ede02a4414d1"
   },
   "src/cpe_catalogos/catalogo_07.rs": {
-    "mtime": 1789049323.2972798,
-    "seen": 1789498402.436511,
+    "mtime": 1789049323.29,
+    "seen": 1790110401.107486,
     "ast_hash": "55bc8f08755aa25a3d733673edb47884",
     "semantic_hash": "55bc8f08755aa25a3d733673edb47884"
   },
   "src/cpe_catalogos/catalogo_08.rs": {
-    "mtime": 1789049330.135214,
-    "seen": 1789498402.4365122,
+    "mtime": 1789049330.13,
+    "seen": 1790110401.107487,
     "ast_hash": "bbb93864e8a636688ded6350a3f88d64",
     "semantic_hash": "bbb93864e8a636688ded6350a3f88d64"
   },
   "src/cpe_catalogos/catalogo_09.rs": {
-    "mtime": 1789049336.593152,
-    "seen": 1789498402.4365132,
+    "mtime": 1789049336.59,
+    "seen": 1790110401.1074884,
     "ast_hash": "cdb9408d21f3efd02f74037da473afcd",
     "semantic_hash": "cdb9408d21f3efd02f74037da473afcd"
   },
   "src/cpe_catalogos/catalogo_10.rs": {
-    "mtime": 1789049341.5261047,
-    "seen": 1789498402.4365146,
+    "mtime": 1789049341.52,
+    "seen": 1790110401.1074898,
     "ast_hash": "e1a99979688190b0de966c75add50e18",
     "semantic_hash": "e1a99979688190b0de966c75add50e18"
   },
   "src/cpe_catalogos/catalogo_17.rs": {
-    "mtime": 1789049348.8450346,
-    "seen": 1789498402.4365156,
-    "ast_hash": "29c912614393d53ffad21da905d8d560",
-    "semantic_hash": "29c912614393d53ffad21da905d8d560"
+    "mtime": 1790109518.5056565,
+    "seen": 1790110401.107491,
+    "ast_hash": "60798f7dba5a623d05563a5f95112e6f",
+    "semantic_hash": "60798f7dba5a623d05563a5f95112e6f"
   },
   "src/cpe_catalogos/catalogo_52.rs": {
-    "mtime": 1789049355.840968,
-    "seen": 1789498402.4365165,
-    "ast_hash": "15240ea58a38b03d4c2ba2be2fb0f4fd",
-    "semantic_hash": "15240ea58a38b03d4c2ba2be2fb0f4fd"
+    "mtime": 1790109518.5056565,
+    "seen": 1790110401.1074922,
+    "ast_hash": "120c6b0dd24d8684fb3a30a4fb43e602",
+    "semantic_hash": "120c6b0dd24d8684fb3a30a4fb43e602"
   },
   "src/cpe_catalogos/catalogo_59.rs": {
-    "mtime": 1789049363.3218968,
-    "seen": 1789498402.4365177,
+    "mtime": 1789049363.32,
+    "seen": 1790110401.1074934,
     "ast_hash": "97f3947849bd76969e3c2275ae37d189",
     "semantic_hash": "97f3947849bd76969e3c2275ae37d189"
   },
   "src/cpe_catalogos/mod.rs": {
-    "mtime": 1789049368.7918448,
-    "seen": 1789498402.4365187,
+    "mtime": 1789049368.79,
+    "seen": 1790110401.1074944,
     "ast_hash": "c9fb00b50c172e63a5b5fa6c5e18295b",
     "semantic_hash": "c9fb00b50c172e63a5b5fa6c5e18295b"
   },
   "src/cpe_cdr/mod.rs": {
-    "mtime": 1789049564.5900433,
-    "seen": 1789498402.4365196,
-    "ast_hash": "07105d054bcbbadbb9cdfc94df5593e1",
-    "semantic_hash": "07105d054bcbbadbb9cdfc94df5593e1"
+    "mtime": 1790109518.5066564,
+    "seen": 1790110401.1074953,
+    "ast_hash": "ac3d64ec3afffb890ee9f736c23686ef",
+    "semantic_hash": "ac3d64ec3afffb890ee9f736c23686ef"
   },
   "src/cpe_empaquetado/mod.rs": {
-    "mtime": 1789049461.147982,
-    "seen": 1789498402.4365208,
-    "ast_hash": "793bf86004ce0b0a1300e177cbff985b",
-    "semantic_hash": "793bf86004ce0b0a1300e177cbff985b"
+    "mtime": 1790109518.5076563,
+    "seen": 1790110401.1074965,
+    "ast_hash": "4fc861e8fcc83bb70d3f9dad503d425c",
+    "semantic_hash": "4fc861e8fcc83bb70d3f9dad503d425c"
   },
   "src/cpe_error.rs": {
-    "mtime": 1789049292.33958,
-    "seen": 1789498402.4365215,
+    "mtime": 1789049292.33,
+    "seen": 1790110401.1074975,
     "ast_hash": "3cc9be9717d58903a1d2a83b7d2d9e93",
     "semantic_hash": "3cc9be9717d58903a1d2a83b7d2d9e93"
   },
   "src/cpe_firma/mod.rs": {
-    "mtime": 1789049559.0100935,
-    "seen": 1789498402.4365225,
-    "ast_hash": "2b15a23294f4833a567293eee6f9aeb4",
-    "semantic_hash": "2b15a23294f4833a567293eee6f9aeb4"
+    "mtime": 1790109518.5086563,
+    "seen": 1790110401.1074984,
+    "ast_hash": "e1b7d7941ed54be11620a26bc961b723",
+    "semantic_hash": "e1b7d7941ed54be11620a26bc961b723"
   },
   "src/cpe_modelos/cpe_boleta.rs": {
-    "mtime": 1789049402.493527,
-    "seen": 1789498402.4365234,
+    "mtime": 1789049402.49,
+    "seen": 1790110401.1074996,
     "ast_hash": "f842a2b6899ca22908904148a26a2b01",
     "semantic_hash": "f842a2b6899ca22908904148a26a2b01"
   },
   "src/cpe_modelos/cpe_comun.rs": {
-    "mtime": 1789049384.8156931,
-    "seen": 1789498402.4365244,
+    "mtime": 1789049384.81,
+    "seen": 1790110401.1075008,
     "ast_hash": "df896aac69f9f396370fce8d4f8ab215",
     "semantic_hash": "df896aac69f9f396370fce8d4f8ab215"
   },
   "src/cpe_modelos/cpe_factura.rs": {
-    "mtime": 1789049391.5776296,
-    "seen": 1789498402.4365253,
+    "mtime": 1789049391.57,
+    "seen": 1790110401.1075017,
     "ast_hash": "1197a2927860dd7783de80e21b3241c9",
     "semantic_hash": "1197a2927860dd7783de80e21b3241c9"
   },
   "src/cpe_modelos/cpe_nota_credito.rs": {
-    "mtime": 1789049409.3934624,
-    "seen": 1789498402.436526,
+    "mtime": 1789049409.39,
+    "seen": 1790110401.107503,
     "ast_hash": "974bfb810d2dcfd2d014fe85afef7bb3",
     "semantic_hash": "974bfb810d2dcfd2d014fe85afef7bb3"
   },
   "src/cpe_modelos/cpe_nota_debito.rs": {
-    "mtime": 1789049419.2243705,
-    "seen": 1789498402.436527,
+    "mtime": 1789049419.22,
+    "seen": 1790110401.1075037,
     "ast_hash": "0d65588845716b72d8dd3af402c85273",
     "semantic_hash": "0d65588845716b72d8dd3af402c85273"
   },
   "src/cpe_modelos/cpe_resumen_diario.rs": {
-    "mtime": 1789049429.4482753,
-    "seen": 1789498402.4365284,
+    "mtime": 1789049429.44,
+    "seen": 1790110401.1075063,
     "ast_hash": "4f83cd864d8ce341ee29c8b541bfd2b5",
     "semantic_hash": "4f83cd864d8ce341ee29c8b541bfd2b5"
   },
   "src/cpe_modelos/mod.rs": {
-    "mtime": 1789049436.7372077,
-    "seen": 1789498402.4365292,
-    "ast_hash": "cde49a88b9c2b32d0c9aacb8e82b9331",
-    "semantic_hash": "cde49a88b9c2b32d0c9aacb8e82b9331"
+    "mtime": 1790109348.2768097,
+    "seen": 1790110401.1075072,
+    "ast_hash": "6c60fdd798ab60ef0c0acbc86c3015ae",
+    "semantic_hash": "6c60fdd798ab60ef0c0acbc86c3015ae"
   },
   "src/cpe_ubl/mod.rs": {
-    "mtime": 1789049541.1942534,
-    "seen": 1789498402.4365299,
-    "ast_hash": "6c168ecf3e38039badd335441531967c",
-    "semantic_hash": "6c168ecf3e38039badd335441531967c"
+    "mtime": 1790109518.5136564,
+    "seen": 1790110401.1075082,
+    "ast_hash": "2bf56ac6652fe049b08bf5986fc44a97",
+    "semantic_hash": "2bf56ac6652fe049b08bf5986fc44a97"
   },
   "src/cpe_ws/mod.rs": {
-    "mtime": 1789049498.0066445,
-    "seen": 1789498402.4365308,
-    "ast_hash": "29328c0023cd3b770fd6729738d428a4",
-    "semantic_hash": "29328c0023cd3b770fd6729738d428a4"
+    "mtime": 1790109518.5166562,
+    "seen": 1790110401.1075103,
+    "ast_hash": "7191606b600499a2c05f85c7e4e1ed7f",
+    "semantic_hash": "7191606b600499a2c05f85c7e4e1ed7f"
   },
   "src/lib.rs": {
-    "mtime": 1789049513.236506,
-    "seen": 1789498402.4365318,
-    "ast_hash": "d499966ad03fda70817eb68d46dcea25",
-    "semantic_hash": "d499966ad03fda70817eb68d46dcea25"
+    "mtime": 1790109518.5186563,
+    "seen": 1790110401.1075113,
+    "ast_hash": "e390be0f7ec8d65fed0c910cc7205196",
+    "semantic_hash": "e390be0f7ec8d65fed0c910cc7205196"
   },
   "README.md": {
-    "mtime": 1789048711.6992245,
-    "seen": 1789498402.4365327,
+    "mtime": 1789048711.69,
+    "seen": 1790110401.1075122,
     "ast_hash": "27ad14fdcbbc5058278f986af7c7b4e2",
     "semantic_hash": "27ad14fdcbbc5058278f986af7c7b4e2"
   },
   "docs/GUIA_PUBLICACION_CRATES_IO.md": {
-    "mtime": 1789074335.6642995,
-    "seen": 1789498402.4365335,
+    "mtime": 1789074335.66,
+    "seen": 1790110401.1075134,
     "ast_hash": "60fca764d48ddaf4b52153d720b2e1b9",
     "semantic_hash": "60fca764d48ddaf4b52153d720b2e1b9"
   },
   "docs/MANUAL_TECNICO.md": {
-    "mtime": 1789049067.0718913,
-    "seen": 1789498402.4365342,
-    "ast_hash": "911543979047bb9e0702d73b8a83260f",
-    "semantic_hash": "911543979047bb9e0702d73b8a83260f"
+    "mtime": 1790109555.422888,
+    "seen": 1790110401.1075146,
+    "ast_hash": "75451b1411dfbd661f495f0f2702f157",
+    "semantic_hash": "75451b1411dfbd661f495f0f2702f157"
   },
   "docs/REGLAS_PROYECTO.md": {
-    "mtime": 1789049229.9821963,
-    "seen": 1789498402.4365354,
+    "mtime": 1789049229.98,
+    "seen": 1790110401.1075168,
     "ast_hash": "6d56ac4baa9505d8d68c585bf2f765fe",
     "semantic_hash": "6d56ac4baa9505d8d68c585bf2f765fe"
   },
   "docs/arquitectura_sunat_cpe.html": {
-    "mtime": 1789487494.900209,
-    "seen": 1789498402.436536,
-    "ast_hash": "0876149ff189a23c8501fe3b1519a37e",
-    "semantic_hash": "0876149ff189a23c8501fe3b1519a37e"
+    "mtime": 1790109701.7022114,
+    "seen": 1790110401.1075177,
+    "ast_hash": "58d93712df85761a5a89f00fa6b72e98",
+    "semantic_hash": "58d93712df85761a5a89f00fa6b72e98"
   },
   "docs/historico/HISTORICO_SOLICITUDES.md": {
-    "mtime": 1789487774.2608871,
-    "seen": 1789498402.436537,
-    "ast_hash": "150c15c2200d77c2669ee60f00f8f913",
-    "semantic_hash": "150c15c2200d77c2669ee60f00f8f913"
+    "mtime": 1790109726.41081,
+    "seen": 1790110401.1075194,
+    "ast_hash": "2e582bcb585f94aa5726288d7af5ab8f",
+    "semantic_hash": "2e582bcb585f94aa5726288d7af5ab8f"
+  },
+  "docs/arquitectura_sunat_cpe.visual-check.json": {
+    "mtime": 1790109711.8980443,
+    "seen": 1790110401.1074762,
+    "ast_hash": "d512619b551c86d8df8cf39e5b74e1b0",
+    "semantic_hash": "d512619b551c86d8df8cf39e5b74e1b0"
+  },
+  "src/cpe_modelos/cpe_qr.rs": {
+    "mtime": 1790109312.2488394,
+    "seen": 1790110401.1075048,
+    "ast_hash": "d1e0b52f70914b9afeb2fd73cd5525ed",
+    "semantic_hash": "d1e0b52f70914b9afeb2fd73cd5525ed"
+  },
+  "src/cpe_validador/mod.rs": {
+    "mtime": 1790109501.448026,
+    "seen": 1790110401.1075091,
+    "ast_hash": "f7501dc6fa0ec299baca47087fedd4e5",
+    "semantic_hash": "f7501dc6fa0ec299baca47087fedd4e5"
+  },
+  "docs/PLAN_IMPLEMENTACION_REFACTORIZACIONES_Y_MEJORAS.md": {
+    "mtime": 1790107544.4715662,
+    "seen": 1790110401.1075156,
+    "ast_hash": "1db213898b0768b6ce223622e098e15d",
+    "semantic_hash": "1db213898b0768b6ce223622e098e15d"
+  },
+  "docs/arquitectura_sunat_cpe.visual-check.html": {
+    "mtime": 1790109711.8980443,
+    "seen": 1790110401.1075187,
+    "ast_hash": "7ec3d820564b359a085732c30549412a",
+    "semantic_hash": "7ec3d820564b359a085732c30549412a"
+  },
+  "docs/arquitectura_sunat_cpe.visual-check.1440x900.dark.png": {
+    "mtime": 1790109711.4620514,
+    "seen": 1790110401.1075206,
+    "ast_hash": "0ca8c1a0cca869bf84b8484d421a1d2a",
+    "semantic_hash": "0ca8c1a0cca869bf84b8484d421a1d2a"
+  },
+  "docs/arquitectura_sunat_cpe.visual-check.1440x900.light.png": {
+    "mtime": 1790109709.7300797,
+    "seen": 1790110401.1075215,
+    "ast_hash": "eaf36574d82e8d83217725f5c5a82a46",
+    "semantic_hash": "eaf36574d82e8d83217725f5c5a82a46"
+  },
+  "docs/arquitectura_sunat_cpe.visual-check.2048x1320.dark.png": {
+    "mtime": 1790109711.8960443,
+    "seen": 1790110401.1075225,
+    "ast_hash": "86301031fd902df9dbd45a6afbaa4367",
+    "semantic_hash": "86301031fd902df9dbd45a6afbaa4367"
+  },
+  "docs/arquitectura_sunat_cpe.visual-check.2048x1320.light.png": {
+    "mtime": 1790109710.999059,
+    "seen": 1790110401.1075258,
+    "ast_hash": "ed842ba455856df96606e4d2a07fce22",
+    "semantic_hash": "ed842ba455856df96606e4d2a07fce22"
   }
 }
