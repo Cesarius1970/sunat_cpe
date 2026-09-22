@@ -9,14 +9,14 @@
       {
         "id": "emision-completa",
         "label": "Flujo de Emisión y Envío",
-        "focus": ["app", "modelos", "ubl", "firma", "empaquetado", "ws", "sunat", "cdr"],
+        "focus": ["app", "modelos", "validador", "ubl", "firma", "empaquetado", "ws", "sunat", "cdr"],
         "note": "Ruta principal desde la construcción del CPE hasta la validación del CDR."
       },
       {
-        "id": "seguridad-firma",
-        "label": "Criptografía y Serialización",
-        "focus": ["modelos", "catalogos", "ubl", "firma"],
-        "note": "Capa de dominio, catálogos normativos y firma digital XMLDSig pura."
+        "id": "validacion-seguridad",
+        "label": "Validación y Criptografía",
+        "focus": ["catalogos", "modelos", "validador", "ubl", "firma"],
+        "note": "Capa de dominio, catálogos normativos, validación pre-vuelo y firma digital XMLDSig pura."
       },
       {
         "id": "red-transporte",
@@ -48,10 +48,19 @@
       "id": "modelos",
       "type": "backend",
       "label": "cpe_modelos",
-      "sublabel": "Dominio CPE",
+      "sublabel": "Dominio CPE & QR",
       "pos": [240, 210],
       "size": [130, 60],
       "tag": "rust_decimal"
+    },
+    {
+      "id": "validador",
+      "type": "backend",
+      "label": "cpe_validador",
+      "sublabel": "Validación Pre-Vuelo",
+      "pos": [450, 70],
+      "size": [130, 60],
+      "tag": "Módulo 11"
     },
     {
       "id": "ubl",
@@ -65,7 +74,7 @@
       "id": "firma",
       "type": "security",
       "label": "cpe_firma",
-      "sublabel": "XMLDSig RSA-SHA256",
+      "sublabel": "XMLDSig & PKCS#12",
       "pos": [660, 210],
       "size": [130, 60],
       "tag": "Rust Nativo"
@@ -99,16 +108,17 @@
       "id": "cdr",
       "type": "backend",
       "label": "cpe_cdr",
-      "sublabel": "Parser Constancia CDR",
+      "sublabel": "Parser quick-xml",
       "pos": [550, 350],
-      "size": [130, 60]
+      "size": [130, 60],
+      "tag": "Observaciones"
     }
   ],
   "boundaries": [
     {
       "kind": "region",
       "label": "Crate sunat_cpe (Librería en Rust)",
-      "wraps": ["catalogos", "modelos", "ubl", "firma", "empaquetado", "ws", "cdr"]
+      "wraps": ["catalogos", "modelos", "validador", "ubl", "firma", "empaquetado", "ws", "cdr"]
     },
     {
       "kind": "security-group",
@@ -131,6 +141,23 @@
       "label": "Validar códigos",
       "fromSide": "top",
       "toSide": "bottom"
+    },
+    {
+      "id": "catalogos-validador",
+      "from": "catalogos",
+      "to": "validador",
+      "label": "Reglas catálogo",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "validador-ubl",
+      "from": "validador",
+      "to": "ubl",
+      "label": "Pre-vuelo OK",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 20
     },
     {
       "id": "modelos-ubl",
@@ -187,27 +214,29 @@
   "cards": [
     {
       "dot": "emerald",
-      "title": "Dominio y Precisión Financiera",
+      "title": "Dominio y Validación Pre-Vuelo",
       "items": [
         "Aritmética decimal exacta mediante rust_decimal (sin punto flotante)",
-        "Catálogos normativos completos 01 a 59 con variantes abiertas para resoluciones futuras"
+        "Validador pre-vuelo con algoritmo de Módulo 11 para RUC, DNI, series y cuadre de balances",
+        "Generación normalizada de Código QR según R.S. N.° 097-2012/SUNAT"
       ]
     },
     {
       "dot": "cyan",
-      "title": "Serialización y Firma Pura",
+      "title": "Serialización UBL 2.1 y Criptografía",
       "items": [
-        "Generador XML UBL 2.1 desacoplado mediante el trait CpeUblSerializador",
-        "Motor de firma digital XMLDSig RSA-SHA256 100% nativo sin dependencias C de OpenSSL"
+        "Serializador UBL 2.1 para Facturas, Boletas, Notas de Crédito y Débito con DiscrepancyResponse",
+        "Motor de firma digital XMLDSig RSA-SHA256 100% Rust sin dependencias C/OpenSSL",
+        "Soporte nativo para certificados PKCS#12 (.p12/.pfx) y extractor de DigestValue"
       ]
     },
     {
       "dot": "violet",
-      "title": "Conectividad y Validación",
+      "title": "Conectividad y Constancias CDR",
       "items": [
         "Empaquetado ZIP y Base64 en memoria según nomenclatura oficial RUC-Tipo-Serie-Correlativo",
         "Clientes I/O duales: asíncrono (_async con reqwest) y síncrono (_sync con ureq)",
-        "Parser semántico del CDR de SUNAT (Aceptado, Observado, Rechazado)"
+        "Parser semántico de CDR con quick-xml y captura integral de observaciones (<cbc:Note>)"
       ]
     }
   ]
