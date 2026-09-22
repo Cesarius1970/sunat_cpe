@@ -1,6 +1,6 @@
 [package]
 name = "sunat_cpe"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 rust-version = "1.85.0"
 authors = ["César A Vergara Buenaventura <cesarvergarab@gmail.com>"]
@@ -11,7 +11,13 @@ keywords = ["sunat", "cpe", "facturacion", "peru", "ubl"]
 categories = ["api-bindings", "asynchronous", "finance"]
 documentation = "https://docs.rs/sunat_cpe"
 repository = "https://github.com/Cesarius1970/sunat_cpe"
-exclude = ["docs/historico/*"]
+exclude = [
+    "docs/historico/*",
+    "docs/*.png",
+    "docs/*.html",
+    "docs/*.json",
+    "graphify-out/*",
+]
 
 [features]
 default = ["async"]
@@ -38,6 +44,7 @@ zip = { version = "2.2", default-features = false, features = ["deflate"] }
 
 # Criptografía 100% Rust pura (sin dependencias C de OpenSSL)
 rsa = { version = "0.9", features = ["pem"] }
+p12 = "0.6.3"
 sha2 = { version = "0.10", features = ["oid"] }
 sha1 = "0.10"
 base64 = "0.22"
@@ -48,4 +55,3 @@ tokio = { version = "1.40", features = ["rt-multi-thread", "macros"], optional =
 
 # Cliente I/O Síncrono bloqueante opcional
 ureq = { version = "2.10", default-features = false, features = ["tls", "json"], optional = true }
-p12 = "0.6.3"
