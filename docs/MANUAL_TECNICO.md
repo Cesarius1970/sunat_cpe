@@ -24,8 +24,9 @@ flowchart TD
 4. **Motor de Firma Digital (`cpe_firma`)**: Implementación de XMLDSig (Enveloped Signature), canonicalización C14N y firma RSA-SHA256 con certificados X.509 (`.pfx` / `.p12`).
 5. **Empaquetado y Compresión (`cpe_empaquetado`)**: Generación de archivos comprimidos ZIP (`{RUC}-{TIPO}-{SERIE}-{NUMERO}.zip`).
 6. **Cliente de Servicios Web (`cpe_ws`)**: Gestión de conexiones SOAP (BillService) y REST (API Guías de Remisión) con soporte para entornos de **Pruebas (Beta)** y **Producción**.
-7. **Recepción y Validación de CDR (`cpe_cdr`)**: Descompresión y lectura del XML de Constancia de Recepción (CDR) para determinar aceptación, observaciones o rechazo.
-8. **Manejo de Errores (`cpe_error`)**: Enum tipado `CpeError` para modelar fallos de validación de negocio, criptográficos, de red y códigos de error SUNAT.
+7. **Recepción y Validación de CDR (`cpe_cdr`)**: Descompresión y lectura basada en eventos XML del Constancia de Recepción (CDR) para determinar aceptación, rechazo y captura exhaustiva de observaciones (`<cbc:Note>`).
+8. **Validador Pre-Vuelo (`cpe_validador`)**: Verificación anticipada de RUCs mediante Módulo 11, DNIs, series y cuadre de balances sin punto flotante antes del envío.
+9. **Manejo de Errores (`cpe_error`)**: Enum tipado `CpeError` para modelar fallos de validación de negocio, criptográficos, de red y códigos de error SUNAT.
 
 
 ---
@@ -121,6 +122,34 @@ sequenceDiagram
   4. **Importes Totales e Impuestos**: Redondeo comercial estricto a **2 decimales** utilizando la estrategia *Half Up* (mitad hacia arriba):
      $$\text{ImporteRedondeado} = \text{round\_half\_up}(x, 2)$$
   5. **Cálculo de IGV por Línea vs Global**: Garantizar que la sumatoria de bases imponibles y el impuesto liquidado cumplan con las tolerancias y reglas de redondeo de la matriz de validaciones de SUNAT.
+
+### 3.7 Algoritmo de Validación Pre-Vuelo (`cpe_validador`)
+- **Módulo 11 para RUC**:
+  El RUC se compone de 11 dígitos: $d_1 d_2 \ldots d_{11}$. Los primeros 10 dígitos se ponderan con los factores $W = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2]$.
+  $$S = \sum_{i=1}^{10} (d_i \times W_i)$$
+  $$R = 11 - (S \pmod{11})$$
+  El dígito verificador esperado $d_{11}$ se determina según:
+  $$d_{11} = \begin{cases} 0 & \text{si } R = 10 \\ 1 & \text{si } R = 11 \\ R & \text{en cualquier otro caso} \end{cases}$$
+- **Validación de Identidad y Series**:
+  - DNI: 8 dígitos numéricos exactos.
+  - Factura: Serie de 4 caracteres iniciando con `F` o `E`.
+  - Boleta: Serie de 4 caracteres iniciando con `B` o `E`. Clientes no identificados permitidos sólo si el importe total no supera S/ 700.00.
+  - Notas de Crédito / Débito: Serie iniciando con `F`, `B` o `E`. Exigencia obligatoria de documento de referencia (`BillingReference`).
+- **Cuadre de Balances Antifloating**:
+  $$\left| \left( \text{Bases} + \text{Tributos} - \text{DescuentosGlobales} \right) - \text{TotalPagar} \right| \le 0.01$$
+
+### 3.8 Algoritmo de Representación Impresa y Código QR (`CpeRepresentacionImpresa`)
+- **Normativa**: R.S. N.° 097-2012/SUNAT y anexos.
+- **Estructura Oficial (10 Campos Delimitados por Pipe `|`)**:
+  `{RUC}|{TipoCPE}|{Serie}|{Numero}|{MontoIGV}|{ImporteTotal}|{FechaEmision}|{TipoDocReceptor}|{NumDocReceptor}|{CodigoHash}|`
+  - Formato decimal estricto a 2 decimales (`{:.2}`) para IGV e Importe Total.
+  - Inclusión obligatoria del `CodigoHash` (DigestValue en Base64).
+
+### 3.9 Carga de Certificados PKCS#12 (`.pfx`/`.p12`) y Extracción de DigestValue
+- **Carga PKCS#12 100% Rust Nativo**:
+  Vía crate `p12`, parsing sin dependencias C/OpenSSL, extrayendo los SafeBags de clave privada RSA (PKCS#8 / PKCS#1 DER) y el certificado X.509 público.
+- **Extracción de DigestValue (`cpe_extraer_hash_resumen`)**:
+  Localización del elemento `<ds:DigestValue>` dentro del bloque `<SignedInfo>` de la firma XMLDSig para suministrarlo a la representación impresa y al código QR.
 
 ---
 

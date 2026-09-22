@@ -66,7 +66,9 @@ impl CpeCodigoLeyenda {
             Self::ContratosConstruccionAmazonia => "CONTRATOS DE CONSTRUCCION EN LA AMAZONIA",
             Self::AgenciaViajePaqueteTuristico => "Agencia de Viaje - Paquete turístico",
             Self::VentaEmisorItinerante => "Venta realizada por emisor itinerante",
-            Self::DetraccionRecursosHidrobiologicos => "Sujeto a detracción - Recursos Hidrobiológicos",
+            Self::DetraccionRecursosHidrobiologicos => {
+                "Sujeto a detracción - Recursos Hidrobiológicos"
+            }
             Self::DetraccionTransportePasajeros => "Sujeto a detracción - Transporte Pasajeros",
             Self::DetraccionTransporteCarga => "Sujeto a detracción - Transporte de Carga",
             Self::Otro(_) => "Otra Leyenda Tributaria",

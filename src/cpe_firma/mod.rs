@@ -4,11 +4,13 @@
 //! bajo el estándar W3C XML Signature (XMLDSig Enveloped) requerido por SUNAT.
 
 use crate::cpe_error::{CpeError, CpeResult};
-use base64::engine::general_purpose::STANDARD as BASE64;
 use base64::Engine;
-use rsa::pkcs1v15::SigningKey;
-use rsa::signature::{SignatureEncoding, SignerMut};
+use base64::engine::general_purpose::STANDARD as BASE64;
 use rsa::RsaPrivateKey;
+use rsa::pkcs1::DecodeRsaPrivateKey;
+use rsa::pkcs1v15::SigningKey;
+use rsa::pkcs8::DecodePrivateKey;
+use rsa::signature::{SignatureEncoding, SignerMut};
 use sha2::{Digest, Sha256};
 use std::fmt::Write;
 
@@ -39,6 +41,77 @@ impl CpeCertificadoDigital {
             certificado_x509_base64: certificado_x509_base64.replace(['\r', '\n', ' '], ""),
         }
     }
+
+    /// Carga una clave privada RSA y el certificado público desde un archivo contenedor PKCS#12 (`.p12` o `.pfx`).
+    ///
+    /// # Errors
+    /// Retorna `CpeError::ErrorFirmaDigital` si el archivo no puede parsearse, la contraseña es incorrecta
+    /// o no se encuentra la clave privada o el certificado.
+    pub fn desde_pkcs12(bytes_p12: &[u8], password: &str) -> CpeResult<Self> {
+        let pfx = p12::PFX::parse(bytes_p12).map_err(|e| {
+            CpeError::ErrorFirmaDigital(format!(
+                "Error al parsear archivo PKCS#12 (.p12/.pfx): {e:?}"
+            ))
+        })?;
+
+        let key_bags = pfx.key_bags(password).map_err(|e| {
+            CpeError::ErrorFirmaDigital(format!(
+                "Error al desencriptar clave privada PKCS#12: {e:?}"
+            ))
+        })?;
+
+        let key_der = key_bags.into_iter().next().ok_or_else(|| {
+            CpeError::ErrorFirmaDigital(
+                "No se encontró clave privada en el archivo PKCS#12".to_string(),
+            )
+        })?;
+
+        let clave_privada = RsaPrivateKey::from_pkcs8_der(&key_der)
+            .or_else(|_| RsaPrivateKey::from_pkcs1_der(&key_der))
+            .map_err(|e| {
+                CpeError::ErrorFirmaDigital(format!(
+                    "Error al decodificar clave privada RSA desde PKCS#12: {e}"
+                ))
+            })?;
+
+        let cert_bags = pfx.cert_x509_bags(password).map_err(|e| {
+            CpeError::ErrorFirmaDigital(format!(
+                "Error al desencriptar certificado X.509 PKCS#12: {e:?}"
+            ))
+        })?;
+
+        let cert_der = cert_bags.into_iter().next().ok_or_else(|| {
+            CpeError::ErrorFirmaDigital(
+                "No se encontró certificado X.509 en el archivo PKCS#12".to_string(),
+            )
+        })?;
+
+        let certificado_x509_base64 = BASE64.encode(&cert_der);
+
+        Ok(Self::nuevo(clave_privada, certificado_x509_base64))
+    }
+}
+
+/// Extrae el DigestValue (hash SHA-256 en Base64) incrustado en la firma digital de un XML firmado.
+///
+/// Este hash es requerido oficialmente por SUNAT para imprimir en la representación física (PDF/Ticket)
+/// y en el código de barras o código QR.
+///
+/// # Errors
+/// Retorna `CpeError::ErrorFirmaDigital` si el comprobante no contiene el elemento `<ds:DigestValue>`.
+pub fn cpe_extraer_hash_resumen(xml_firmado: &str) -> CpeResult<String> {
+    if let Some(pos_inicio) = xml_firmado.find("DigestValue>") {
+        let inicio = pos_inicio + "DigestValue>".len();
+        if let Some(pos_fin) = xml_firmado[inicio..].find("</") {
+            let hash = xml_firmado[inicio..inicio + pos_fin].trim();
+            if !hash.is_empty() {
+                return Ok(hash.to_string());
+            }
+        }
+    }
+    Err(CpeError::ErrorFirmaDigital(
+        "No se encontró el elemento <ds:DigestValue> en el XML firmado".to_string(),
+    ))
 }
 
 impl CpeFirmador for CpeCertificadoDigital {
@@ -58,7 +131,9 @@ impl CpeFirmador for CpeCertificadoDigital {
         signed_info.push_str("        <Transforms>\n");
         signed_info.push_str("            <Transform Algorithm=\"http://www.w3.org/2000/09/xmldsig#enveloped-signature\"/>\n");
         signed_info.push_str("        </Transforms>\n");
-        signed_info.push_str("        <DigestMethod Algorithm=\"http://www.w3.org/2001/04/xmlenc#sha256\"/>\n");
+        signed_info.push_str(
+            "        <DigestMethod Algorithm=\"http://www.w3.org/2001/04/xmlenc#sha256\"/>\n",
+        );
         let _ = writeln!(
             &mut signed_info,
             "        <DigestValue>{}</DigestValue>",
@@ -74,7 +149,9 @@ impl CpeFirmador for CpeCertificadoDigital {
 
         // 4. Construir el elemento ds:Signature completo
         let mut signature_xml = String::with_capacity(2048);
-        signature_xml.push_str("<ds:Signature xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" Id=\"SignSUNAT\">\n");
+        signature_xml.push_str(
+            "<ds:Signature xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" Id=\"SignSUNAT\">\n",
+        );
         let _ = writeln!(&mut signature_xml, "    {}", signed_info);
         let _ = writeln!(
             &mut signature_xml,
@@ -101,7 +178,10 @@ impl CpeFirmador for CpeCertificadoDigital {
 
         let xml_firmado = xml_sin_firmar.replacen(
             "<ext:ExtensionContent/>",
-            &format!("<ext:ExtensionContent>\n{}\n        </ext:ExtensionContent>", signature_xml),
+            &format!(
+                "<ext:ExtensionContent>\n{}\n        </ext:ExtensionContent>",
+                signature_xml
+            ),
             1,
         );
 

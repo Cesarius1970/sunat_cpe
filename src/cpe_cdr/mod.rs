@@ -3,7 +3,9 @@
 //! Procesamiento y validación del comprobante de recepción emitido por la SUNAT u OSE.
 
 use crate::cpe_empaquetado::cpe_descomprimir_primer_archivo;
-use crate::cpe_error::CpeResult;
+use crate::cpe_error::{CpeError, CpeResult};
+use quick_xml::events::Event;
+use quick_xml::reader::Reader;
 use serde::{Deserialize, Serialize};
 
 /// Estado del comprobante según el código de respuesta del CDR de SUNAT.
@@ -11,7 +13,7 @@ use serde::{Deserialize, Serialize};
 pub enum CpeEstadoCdr {
     /// Código "0": Comprobante válido y plenamente aceptado por la SUNAT.
     Aceptado,
-    /// Códigos "0100" a "1999": Aceptado tributariamente, pero contiene observaciones.
+    /// Códigos "0100" a "1999" o aceptación con notas de advertencia: Aceptado tributariamente, pero contiene observaciones.
     AceptadoConObservaciones(Vec<String>),
     /// Códigos "2000" o superiores: Comprobante rechazado por SUNAT (sin valor tributario).
     Rechazado(String),
@@ -43,28 +45,119 @@ pub struct CpeCdr {
 }
 
 impl CpeCdr {
-    /// Parsea un XML de CDR y construye la estructura `CpeCdr`.
+    /// Parsea un XML de CDR y construye la estructura `CpeCdr` utilizando un parser
+    /// de eventos XML robusto e insensible a variaciones de namespaces.
     ///
     /// # Errors
-    /// Retorna `CpeError::ErrorCdr` si no se encuentran los nodos obligatorios de respuesta.
+    /// Retorna `CpeError::ErrorXml` si la sintaxis del documento XML no es válida.
     pub fn desde_xml(xml: &str) -> CpeResult<Self> {
-        let codigo_respuesta = extraer_etiqueta(xml, "cbc:ResponseCode")
-            .unwrap_or_else(|| "DESCONOCIDO".to_string());
-        let descripcion_respuesta = extraer_etiqueta(xml, "cbc:Description")
-            .unwrap_or_else(|| "Sin descripción".to_string());
-        let id = extraer_etiqueta(xml, "cbc:ID").unwrap_or_default();
-        let fecha_respuesta = extraer_etiqueta(xml, "cbc:ResponseDate").unwrap_or_default();
-        let hora_respuesta = extraer_etiqueta(xml, "cbc:ResponseTime");
-        let ruc_emisor = extraer_etiqueta(xml, "cbc:RecipientPartyID").unwrap_or_default();
-        let documento_referenciado = extraer_etiqueta(xml, "cbc:ReferenceID").unwrap_or_default();
-        let hash_comprobante = extraer_etiqueta(xml, "ds:DigestValue");
+        let mut reader = Reader::from_str(xml);
+        reader.config_mut().trim_text(true);
 
-        // Clasificar el estado según el estándar de códigos de SUNAT
+        let mut id = String::new();
+        let mut fecha_respuesta = String::new();
+        let mut hora_respuesta = None;
+        let mut ruc_emisor = String::new();
+        let mut documento_referenciado = String::new();
+        let mut codigo_respuesta = String::new();
+        let mut descripcion_respuesta = String::new();
+        let mut hash_comprobante = None;
+        let mut observaciones = Vec::new();
+
+        let mut current_tag = String::new();
+        let mut inside_response = false;
+
+        loop {
+            match reader.read_event() {
+                Ok(Event::Start(ref e)) => {
+                    let name = e.name();
+                    let local = match name.as_ref().split(|&b| b == b':').next_back() {
+                        Some(l) => String::from_utf8_lossy(l).to_string(),
+                        None => String::new(),
+                    };
+                    if local == "Response" {
+                        inside_response = true;
+                    }
+                    current_tag = local;
+                }
+                Ok(Event::End(ref e)) => {
+                    let name = e.name();
+                    let local = match name.as_ref().split(|&b| b == b':').next_back() {
+                        Some(l) => String::from_utf8_lossy(l).to_string(),
+                        None => String::new(),
+                    };
+                    if local == "Response" {
+                        inside_response = false;
+                    }
+                    current_tag.clear();
+                }
+                Ok(Event::Text(ref e)) => {
+                    let text = e.unescape().unwrap_or_default().trim().to_string();
+                    if !text.is_empty() {
+                        match current_tag.as_str() {
+                            "ID" if id.is_empty() => id = text,
+                            "ResponseDate" => fecha_respuesta = text,
+                            "ResponseTime" => hora_respuesta = Some(text),
+                            "RecipientPartyID" => ruc_emisor = text,
+                            "ReferenceID" => documento_referenciado = text,
+                            "ResponseCode" if inside_response || codigo_respuesta.is_empty() => {
+                                codigo_respuesta = text;
+                            }
+                            "Description"
+                                if (inside_response || descripcion_respuesta.is_empty()) =>
+                            {
+                                descripcion_respuesta = text;
+                            }
+                            "DigestValue" => hash_comprobante = Some(text),
+                            "Note" => observaciones.push(text),
+                            _ => {}
+                        }
+                    }
+                }
+                Ok(Event::CData(ref e)) => {
+                    let text = String::from_utf8_lossy(e.as_ref()).trim().to_string();
+                    if !text.is_empty() {
+                        match current_tag.as_str() {
+                            "Description"
+                                if (inside_response || descripcion_respuesta.is_empty()) =>
+                            {
+                                descripcion_respuesta = text;
+                            }
+                            "Note" => observaciones.push(text),
+                            _ => {}
+                        }
+                    }
+                }
+                Ok(Event::Eof) => break,
+                Err(e) => {
+                    return Err(CpeError::ErrorXml(format!(
+                        "Error al analizar sintaxis XML del CDR: {e}"
+                    )));
+                }
+                _ => {}
+            }
+        }
+
+        if codigo_respuesta.is_empty() {
+            codigo_respuesta = "DESCONOCIDO".to_string();
+        }
+        if descripcion_respuesta.is_empty() {
+            descripcion_respuesta = "Sin descripción".to_string();
+        }
+
         let estado = if codigo_respuesta == "0" {
-            CpeEstadoCdr::Aceptado
+            if observaciones.is_empty() {
+                CpeEstadoCdr::Aceptado
+            } else {
+                CpeEstadoCdr::AceptadoConObservaciones(observaciones.clone())
+            }
         } else if let Ok(cod_num) = codigo_respuesta.parse::<u32>() {
             if (100..2000).contains(&cod_num) {
-                CpeEstadoCdr::AceptadoConObservaciones(vec![descripcion_respuesta.clone()])
+                let mut obs = observaciones.clone();
+                if obs.is_empty() {
+                    obs.push(descripcion_respuesta.clone());
+                }
+                CpeEstadoCdr::AceptadoConObservaciones(obs)
             } else {
                 CpeEstadoCdr::Rechazado(format!("[{codigo_respuesta}] {descripcion_respuesta}"))
             }
@@ -81,7 +174,7 @@ impl CpeCdr {
             codigo_respuesta,
             descripcion_respuesta,
             estado,
-            observaciones: Vec::new(),
+            observaciones,
             hash_comprobante,
         })
     }
@@ -103,21 +196,5 @@ impl CpeCdr {
             self.estado,
             CpeEstadoCdr::Aceptado | CpeEstadoCdr::AceptadoConObservaciones(_)
         )
-    }
-}
-
-/// Función auxiliar para extraer el contenido textual de una etiqueta XML simple.
-fn extraer_etiqueta(xml: &str, tag: &str) -> Option<String> {
-    let tag_apertura = format!("<{tag}>");
-    let tag_cierre = format!("</{tag}>");
-
-    let inicio = xml.find(&tag_apertura)? + tag_apertura.len();
-    let fin = xml[inicio..].find(&tag_cierre)? + inicio;
-
-    let contenido = xml[inicio..fin].trim();
-    if contenido.starts_with("<![CDATA[") && contenido.ends_with("]]>") {
-        Some(contenido[9..contenido.len() - 3].trim().to_string())
-    } else {
-        Some(contenido.to_string())
     }
 }

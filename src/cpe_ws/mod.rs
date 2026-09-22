@@ -35,8 +35,12 @@ impl CpeAmbiente {
     #[must_use]
     pub fn url_consult_service(&self) -> &str {
         match self {
-            Self::Beta => "https://e-beta.sunat.gob.pe/ol-ti-itwsconsvalidcpe-beta/billConsultService",
-            Self::Produccion => "https://e-factura.sunat.gob.pe/ol-it-wsconsvalidcpe/billConsultService",
+            Self::Beta => {
+                "https://e-beta.sunat.gob.pe/ol-ti-itwsconsvalidcpe-beta/billConsultService"
+            }
+            Self::Produccion => {
+                "https://e-factura.sunat.gob.pe/ol-it-wsconsvalidcpe/billConsultService"
+            }
             Self::Personalizado(url) => url.as_str(),
         }
     }
@@ -158,42 +162,45 @@ pub fn cpe_construir_envelope_get_status(
 
 /// Extrae el CDR en Base64 de la respuesta SOAP de `sendBill`.
 pub fn cpe_extraer_cdr_de_respuesta_soap(soap_response: &str) -> CpeResult<CpeCdr> {
-    if let Some(pos) = soap_response.find("<applicationResponse>") {
-        let inicio = pos + "<applicationResponse>".len();
-        let fin = soap_response[inicio..]
-            .find("</applicationResponse>")
-            .ok_or_else(|| {
-                CpeError::ErrorXml("Etiqueta </applicationResponse> no encontrada".to_string())
-            })?
-            + inicio;
-
-        let base64_cdr = &soap_response[inicio..fin];
-        let zip_bytes = cpe_decodificar_base64(base64_cdr)?;
-        CpeCdr::desde_zip(&zip_bytes)
-    } else if let Some(fault_pos) = soap_response.find("<faultcode>") {
-        let inicio = fault_pos + "<faultcode>".len();
-        let fin = soap_response[inicio..].find("</faultcode>").unwrap_or(0) + inicio;
-        let codigo = &soap_response[inicio..fin];
-
-        let msg_inicio = soap_response
-            .find("<faultstring>")
-            .map(|p| p + "<faultstring>".len())
-            .unwrap_or(0);
-        let msg_fin = soap_response[msg_inicio..]
-            .find("</faultstring>")
-            .unwrap_or(0)
-            + msg_inicio;
-        let mensaje = &soap_response[msg_inicio..msg_fin];
-
-        Err(CpeError::ErrorSunatWebService {
-            codigo: codigo.trim().to_string(),
-            mensaje: mensaje.trim().to_string(),
-        })
-    } else {
-        Err(CpeError::ErrorXml(
-            "Respuesta SOAP inesperada: no contiene applicationResponse ni SoapFault".to_string(),
-        ))
+    if let Some(pos) = soap_response.find("applicationResponse") {
+        if let Some(pos_cierre) = soap_response[pos..].find('>') {
+            let inicio = pos + pos_cierre + 1;
+            if let Some(fin_rel) = soap_response[inicio..].find("</") {
+                let base64_cdr = soap_response[inicio..inicio + fin_rel].trim();
+                let zip_bytes = cpe_decodificar_base64(base64_cdr)?;
+                return CpeCdr::desde_zip(&zip_bytes);
+            }
+        }
     }
+
+    if let Some(fault_pos) = soap_response.find("faultcode") {
+        if let Some(pos_cierre) = soap_response[fault_pos..].find('>') {
+            let inicio = fault_pos + pos_cierre + 1;
+            let fin_rel = soap_response[inicio..].find("</").unwrap_or(0);
+            let codigo = &soap_response[inicio..inicio + fin_rel];
+
+            let mensaje = if let Some(msg_pos) = soap_response.find("faultstring") {
+                if let Some(mcierre) = soap_response[msg_pos..].find('>') {
+                    let minicio = msg_pos + mcierre + 1;
+                    let mfin_rel = soap_response[minicio..].find("</").unwrap_or(0);
+                    soap_response[minicio..minicio + mfin_rel].trim()
+                } else {
+                    "Error SOAP sin descripción"
+                }
+            } else {
+                "Error SOAP sin descripción"
+            };
+
+            return Err(CpeError::ErrorSunatWebService {
+                codigo: codigo.trim().to_string(),
+                mensaje: mensaje.to_string(),
+            });
+        }
+    }
+
+    Err(CpeError::ErrorXml(
+        "Respuesta SOAP inesperada: no contiene applicationResponse ni SoapFault".to_string(),
+    ))
 }
 
 // ----------------------------------------------------------------------------
@@ -221,7 +228,9 @@ pub async fn cpe_enviar_documento_async(
         .body(soap_envelope)
         .send()
         .await
-        .map_err(|e| CpeError::ErrorRed(format!("Error HTTP al enviar comprobante a SUNAT: {e}")))?;
+        .map_err(|e| {
+            CpeError::ErrorRed(format!("Error HTTP al enviar comprobante a SUNAT: {e}"))
+        })?;
 
     let cuerpo_respuesta = res
         .text()

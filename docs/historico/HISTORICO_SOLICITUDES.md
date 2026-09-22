@@ -203,3 +203,19 @@ Este documento mantiene un registro secuencial y numerado de todas las solicitud
   ```
 - **Respuesta**:
   > Se elaboró y guardó el documento técnico exhaustivo `docs/PLAN_IMPLEMENTACION_REFACTORIZACIONES_Y_MEJORAS.md`. En él se especifican en detalle: (1) La refactorización del motor UBL para Boletas y Facturas sin reemplazo de texto, escapado seguro de entidades XML y parser semántico de CDR con `quick-xml`; (2) La implementación de `CpeUblSerializador` para Notas de Crédito (UBL `CreditNote-2`) y Notas de Débito (UBL `DebitNote-2`); (3) Las utilidades de generación de Cadena QR (R.S. 097-2012/SUNAT), extracción de hash de resumen digital, validador pre-vuelo (`cpe_validador`) con algoritmo de RUC (Módulo 11) y cuadre de totales, y constructor de certificados desde archivos PKCS#12/PFX. Se mantuvo intacto el código fuente de la librería a la espera de la aprobación del usuario.
+
+---
+
+## Interacción #17
+- **Fecha / Hora**: `2026-09-22T15:40:00-05:00`
+- **Solicitud / Prompt**:
+  ```text
+  Proceder con los 3 pasos en orden secuencial
+  ```
+- **Respuesta**:
+  > Se ejecutaron secuencialmente los 3 pasos aprobados:
+  > 1. **Paso 1 (Robustecimiento UBL y Parser CDR)**: Unificación y parametrización de la generación UBL para facturas (`01`) y boletas (`03`) eliminando reemplazos frágiles de texto (`replacen`), incorporación de la función `cpe_xml_escape` para sanitización de entidades XML, y parser de CDR basado en eventos `quick-xml` inmune a prefijos de namespace con captura completa de observaciones (`<cbc:Note>`).
+  > 2. **Paso 2 (Notas de Crédito y Débito UBL 2.1)**: Implementación de `CpeUblSerializador` para `CpeNotaCredito` (UBL `CreditNote-2`) y `CpeNotaDebito` (UBL `DebitNote-2`) incluyendo bloques `DiscrepancyResponse` y `BillingReference`.
+  > 3. **Paso 3 (Validador Pre-Vuelo, Utilidades QR y PKCS#12)**: Creación del módulo `cpe_validador` con algoritmo de Módulo 11 para RUC, DNI, validación de series y cuadre aritmético sin punto flotante (`rust_decimal`); trait `CpeRepresentacionImpresa` con formato oficial de 10 campos para Código QR (R.S. 097-2012/SUNAT); extractor de hash de resumen digital `cpe_extraer_hash_resumen`; y soporte nativo puro en Rust para certificados PKCS#12 (`.p12`/`.pfx`) vía `p12`.
+  > Todos los 12 tests unitarios pasaron exitosamente y el código superó `cargo fmt --check` y `cargo clippy -- -D warnings` con 0 errores y 0 advertencias. Se actualizó la documentación en `docs/MANUAL_TECNICO.md`.
+

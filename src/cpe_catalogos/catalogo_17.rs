@@ -83,7 +83,9 @@ impl CpeTipoOperacion {
             Self::ExportacionServiciosTransporte => {
                 "Exportación de servicios - Transporte internacional de carga"
             }
-            Self::VentaNoDomiciliadaNoExportacion => "Venta no domiciliada que no califica como exp.",
+            Self::VentaNoDomiciliadaNoExportacion => {
+                "Venta no domiciliada que no califica como exp."
+            }
             Self::OperacionSujetaADetraccion => "Operación Sujeta a Detracción",
             Self::OperacionSujetaADetraccionHidrobiologicos => {
                 "Operación Sujeta a Detracción - Recursos Hidrobiológicos"
